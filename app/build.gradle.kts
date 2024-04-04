@@ -50,4 +50,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    //retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+
+    //json
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    //image
+    implementation("com.squareup.picasso:picasso:2.8")
 }
