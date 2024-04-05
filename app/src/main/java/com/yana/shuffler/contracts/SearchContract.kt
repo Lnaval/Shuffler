@@ -13,9 +13,11 @@ interface SearchContract {
         fun getBooks(searchKey: String, pageNumber: Int, searchListener: OnFinishedSearchListener)
         fun addBookToList(book: Book, context: Context, searchListener: OnFinishedSearchListener)
         fun getMoreBooks(searchKey: String, pageNumber: Int, searchListener: OnFinishedSearchListener)
+        fun isOnline(context: Context): Boolean
     }
 
     interface Presenter{
+        fun checkConnectivity(context: Context)
         fun searchBooks(searchKey: String, pageNumber: Int)
         fun addBook(book: Book, context: Context)
         fun searchMore(searchKey: String, pageNumber: Int)
@@ -25,5 +27,6 @@ interface SearchContract {
         fun setUpSearchedItemsList(books: ArrayList<Book>)
         fun notifyAddedBookResult()
         fun addMoreBookResults(books: ArrayList<Book>)
+        fun showNoInternetDialog()
     }
 }

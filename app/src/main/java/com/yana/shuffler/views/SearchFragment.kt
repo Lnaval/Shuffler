@@ -1,19 +1,25 @@
 package com.yana.shuffler.views
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.picasso.Picasso
+import android.widget.SearchView
+import androidx.core.view.isVisible
 import com.yana.shuffler.R
 import com.yana.shuffler.contracts.SearchContract
 import com.yana.shuffler.databinding.DialogBottomSheetBookDetailsBinding
+import com.yana.shuffler.databinding.DialogNoInternetBinding
 import com.yana.shuffler.databinding.FragmentSearchBinding
 import com.yana.shuffler.models.Book
 import com.yana.shuffler.models.SearchModel
@@ -39,15 +45,16 @@ class SearchFragment : Fragment(), SearchContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         searchPresenter = SearchPresenter(this, SearchModel())
+        searchPresenter.checkConnectivity(requireContext())
 
         val search = binding.searchView
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if(query.isNullOrEmpty()){
-                    //do something
-                } else{
+                if(query!=null) {
+                    search.clearFocus()
                     searchKey = query
                     searchPresenter.searchBooks(searchKey, 1)
+                    binding.progressIndicator.isVisible = true
                 }
                 return false
             }
@@ -80,6 +87,7 @@ class SearchFragment : Fragment(), SearchContract.View {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = searchedBooks
         }
+        binding.progressIndicator.isVisible = false
     }
 
     override fun notifyAddedBookResult() {
@@ -96,6 +104,17 @@ class SearchFragment : Fragment(), SearchContract.View {
         val positionStart = searchedBooks.itemCount - books.size
         Log.e("TAG", "Fragment: $positionStart | ${books.size}")
         searchedBooks.notifyItemRangeInserted(positionStart, books.size)
+    }
+
+    override fun showNoInternetDialog() {
+        val mNoInternetDialog = Dialog(requireContext())
+        val mNoInternetDialogBinding = DialogNoInternetBinding.inflate(layoutInflater, null, false)
+
+        mNoInternetDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        //mNoInternetDialog.setCancelable(false)
+        mNoInternetDialog.setContentView(mNoInternetDialogBinding.root)
+        mNoInternetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        mNoInternetDialog.show()
     }
 
     private fun setUpDialogBottomSheetBookDetails(book: Book){

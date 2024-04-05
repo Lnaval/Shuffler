@@ -6,13 +6,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".views.SearchFragment">
-    <androidx.appcompat.widget.SearchView
+    <SearchView
         android:layout_margin="10dp"
-        android:padding="5dp"
         android:id="@+id/searchView"
+        android:iconifiedByDefault="false"
+        android:searchHintIcon="@null"
+        android:focusable="false"
+        android:background="@drawable/search_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressIndicator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
