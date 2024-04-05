@@ -5,6 +5,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import com.yana.shuffler.contracts.SearchContract
+import com.yana.shuffler.models.room.AddedBookDatabase
+import com.yana.shuffler.models.room.RoomBook
 import com.yana.shuffler.network.OpenLibraryInterface
 import com.yana.shuffler.network.RetrofitInstance
 import kotlinx.coroutines.CoroutineScope
@@ -26,8 +28,8 @@ class SearchModel : SearchContract.Model {
 
     override fun addBookToList(book: Book, context: Context, searchListener: SearchContract.Model.OnFinishedSearchListener) {
         //add book to room database
-        //val bookToAdd = RoomBook(0, book.title, book.image, book.author.toString())
-        //BookTbrDatabase.getInstance(context).bookDao().addBook(bookToAdd)
+        val bookToAdd = RoomBook(0, book.title, book.image, book.author.toString())
+        AddedBookDatabase.getInstance(context).bookDao().addBook(bookToAdd)
         searchListener.onBookAdded()
     }
 
