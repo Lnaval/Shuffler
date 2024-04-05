@@ -110,11 +110,13 @@ class SearchFragment : Fragment(), SearchContract.View {
         val mNoInternetDialog = Dialog(requireContext())
         val mNoInternetDialogBinding = DialogNoInternetBinding.inflate(layoutInflater, null, false)
 
-        mNoInternetDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        //mNoInternetDialog.setCancelable(false)
-        mNoInternetDialog.setContentView(mNoInternetDialogBinding.root)
-        mNoInternetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        mNoInternetDialog.show()
+        mNoInternetDialog.apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            //setCancelable(false)
+            setContentView(mNoInternetDialogBinding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
+        }
     }
 
     private fun setUpDialogBottomSheetBookDetails(book: Book){

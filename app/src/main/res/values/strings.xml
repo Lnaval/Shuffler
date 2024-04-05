@@ -7,4 +7,5 @@
     <string name="search">Search</string>
     <string name="book_list">Book List</string>
     <string name="greeting_string">Hello, [NAME]</string>
+    <string name="calendar">Advent Calendar</string>
 </resources>

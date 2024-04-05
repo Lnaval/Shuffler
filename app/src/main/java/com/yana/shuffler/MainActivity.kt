@@ -6,9 +6,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
 import com.yana.shuffler.databinding.ActivityMainBinding
 import com.yana.shuffler.views.AddedBooksFragment
+import com.yana.shuffler.views.CalendarFragment
 import com.yana.shuffler.views.SearchFragment
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -39,12 +41,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.navSearch -> supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, SearchFragment()).commit()
-            R.id.navBookList -> supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, AddedBooksFragment()).commit()
+            R.id.navSearch -> replaceFragment(SearchFragment())
+            R.id.navBookList -> replaceFragment(AddedBooksFragment())
+            R.id.navCalendar -> replaceFragment(CalendarFragment())
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment).commit()
     }
 }

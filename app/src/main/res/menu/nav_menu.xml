@@ -13,5 +13,9 @@
             android:id="@+id/navBookList"
             android:icon="@android:drawable/ic_menu_gallery"
             android:title="@string/book_list"/>
+        <item
+            android:id="@+id/navCalendar"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="@string/calendar"/>
     </group>
 </menu>
