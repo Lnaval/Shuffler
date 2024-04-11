@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yana.shuffler.databinding.LayoutCalendarItemBinding
 import com.yana.shuffler.models.room.RoomDate
 
-class CalendarAdapter(val onClickDate: ((date: String) -> Unit)) : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
+class CalendarAdapter(val onClickDate: ((id: Int) -> Unit)) : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
     private val diffCallback = object : DiffUtil.ItemCallback<RoomDate>(){
         override fun areItemsTheSame(oldItem: RoomDate, newItem: RoomDate): Boolean {
             return oldItem.id == newItem.id
@@ -43,7 +43,7 @@ class CalendarAdapter(val onClickDate: ((date: String) -> Unit)) : RecyclerView.
         if(item.book!=-1){
             holder.test.isVisible = true
             holder.test.setOnClickListener {
-                onClickDate.invoke(item.date)
+                onClickDate.invoke(item.id)
             }
         } else {
             holder.test.isInvisible = true

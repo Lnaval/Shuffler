@@ -61,16 +61,16 @@ class CalendarModel: CalendarContract.Model {
 
         if(dayOfMonthStartAt!=7){
             for(a in 1..dayOfMonthStartAt){
-                list.add(RoomDate(a, "", -1,false))
+                list.add(RoomDate(0, "", -1,false))
             }
         }
 
         for(item in dateList){
             val dateOfItem = item.date.substring(3,5).toInt()
             for(i in (list.size-dayOfMonthStartAt+1)..<dateOfItem){
-                list.add(RoomDate(i, i.toString(), -1,false))
+                list.add(RoomDate(0, i.toString(), -1,false))
             }
-            list.add(RoomDate(item.id, dateOfItem.toString(), item.book, true))
+            list.add(RoomDate(item.id, dateOfItem.toString(), item.book, false))
         }
 
         if(list.size <= dayInMonth){

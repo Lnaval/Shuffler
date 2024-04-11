@@ -92,7 +92,7 @@ class CalendarFragment : Fragment(), CalendarContract.View {
 
     override fun setUpCalendarView(dataForAdapter: ArrayList<RoomDate>) {
         val calendarAdapter = CalendarAdapter{
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
         }
 
         calendarAdapter.asyncListDiffer.submitList(dataForAdapter)
