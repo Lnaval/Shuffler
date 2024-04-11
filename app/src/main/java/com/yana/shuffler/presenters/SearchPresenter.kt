@@ -8,12 +8,6 @@ class SearchPresenter(
     private var mainView: SearchContract.View?,
     private val model: SearchContract.Model
 ): SearchContract.Presenter, SearchContract.Model.OnFinishedSearchListener {
-    override fun checkConnectivity(context: Context) {
-        val isOnline = model.isOnline(context)
-        if(!isOnline)
-            mainView!!.showNoInternetDialog()
-    }
-
     override fun searchBooks(searchKey: String, pageNumber: Int) {
         model.getBooks(searchKey, pageNumber, this)
     }

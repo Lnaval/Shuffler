@@ -45,7 +45,6 @@ class SearchFragment : Fragment(), SearchContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         searchPresenter = SearchPresenter(this, SearchModel())
-        searchPresenter.checkConnectivity(requireContext())
 
         val search = binding.searchView
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

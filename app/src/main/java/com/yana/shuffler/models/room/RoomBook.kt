@@ -8,6 +8,6 @@ import androidx.room.PrimaryKey
 data class RoomBook (
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "name") val title: String,
-    @ColumnInfo(name = "image") val image: String,
+    @ColumnInfo(name = "image") val image: String?,
     @ColumnInfo(name = "author") val author: String
 )
