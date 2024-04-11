@@ -9,16 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import com.yana.shuffler.databinding.DialogNoInternetBinding
+import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
+import com.yana.shuffler.contracts.CalendarContract
+import com.yana.shuffler.databinding.DialogShuffleBinding
 import com.yana.shuffler.databinding.FragmentCalendarBinding
-import com.yana.shuffler.models.room.AddedBookDatabase
-import com.yana.shuffler.models.room.RoomBook
+import com.yana.shuffler.models.CalendarModel
 import com.yana.shuffler.models.room.RoomDate
+import com.yana.shuffler.presenters.CalendarPresenter
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment(), CalendarContract.View {
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
+    private lateinit var calendarPresenter: CalendarPresenter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,8 +36,8 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //do something
-        checkBookDateAssignment(false)
+        calendarPresenter = CalendarPresenter(this, CalendarModel())
+        calendarPresenter.requestDateTableData(requireContext())
     }
 
     override fun onDestroyView() {
@@ -39,40 +45,61 @@ class CalendarFragment : Fragment() {
         _binding = null
     }
 
-
-
-    private fun checkBookDateAssignment(result: Boolean){
-        if(!result){
-            val mNoInternetDialog = Dialog(requireContext())
-            val mNoInternetDialogBinding = DialogNoInternetBinding.inflate(layoutInflater, null, false)
-
-            mNoInternetDialog.apply {
+    override fun setUpShuffleDialog(result: Boolean) {
+        if(!result) {
+            val shuffleBooksDialog = Dialog(requireContext())
+            val sBDialogBinding = DialogShuffleBinding.inflate(layoutInflater, null, false)
+            shuffleBooksDialog.apply {
                 requestWindowFeature(Window.FEATURE_NO_TITLE)
-                //setCancelable(false)
-                setContentView(mNoInternetDialogBinding.root)
+                setCancelable(false)
+                setContentView(sBDialogBinding.root)
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 show()
             }
 
-            val currentBookList = AddedBookDatabase.getInstance(requireContext()).bookDao().getAllBookInList()
-            val shuffledList = currentBookList.shuffled()
-            assignBookToDate(daysAfter = 5, shuffledList = shuffledList)
+            sBDialogBinding.confirm.setOnClickListener {
+                val daysAfter = sBDialogBinding.daysAfterInput.text.toString().toInt()
+                calendarPresenter.shuffleList(daysAfter, requireContext())
+                shuffleBooksDialog.cancel()
+            }
         } else {
-            //proceed to display calendar since shuffled na siya
+            //display calendar
+            val calendar = Calendar.getInstance()
+            var dayInMonth = calendar.getActualMaximum(Calendar.DATE)
+
+            val monthTextFormat = SimpleDateFormat("MMMM", Locale.getDefault())
+            binding.monthText.text = monthTextFormat.format(calendar.time)
+
+            val monthNumberFormat = SimpleDateFormat("MM", Locale.getDefault())
+
+            calendarPresenter.requestCalendarData(monthNumberFormat.format(calendar.time), dayInMonth, requireContext())
+
+            binding.prevKey.setOnClickListener {
+                calendar.add(Calendar.MONTH, -1)
+                binding.monthText.text = monthTextFormat.format(calendar.time)
+                dayInMonth = calendar.getActualMaximum(Calendar.DATE)
+                calendarPresenter.requestCalendarData(monthNumberFormat.format(calendar.time), dayInMonth, requireContext())
+            }
+
+            binding.nextKey.setOnClickListener {
+                calendar.add(Calendar.MONTH, 1)
+                binding.monthText.text = monthTextFormat.format(calendar.time)
+                dayInMonth = calendar.getActualMaximum(Calendar.DATE)
+                calendarPresenter.requestCalendarData(monthNumberFormat.format(calendar.time), dayInMonth, requireContext())
+            }
         }
     }
 
-    private fun assignBookToDate(daysAfter: Int, shuffledList: List<RoomBook>) {
-        var count = 0
-        val dateList = ArrayList<RoomDate>()
-        for(element in shuffledList){
-            val calendar = Calendar.getInstance()
-            calendar.add(Calendar.DAY_OF_YEAR, count)
-            val dayToAssign = calendar.time
-
-            dateList.add(RoomDate(0,dayToAssign.toString(), element.id))
-            count += daysAfter
+    override fun setUpCalendarView(dataForAdapter: ArrayList<RoomDate>) {
+        val calendarAdapter = CalendarAdapter{
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         }
-        AddedBookDatabase.getInstance(requireContext()).dateDao().addAll(dateList)
+
+        calendarAdapter.asyncListDiffer.submitList(dataForAdapter)
+
+        binding.calendarView.apply {
+            adapter = calendarAdapter
+            layoutManager = GridLayoutManager(requireContext(), 7)
+        }
     }
 }

@@ -8,4 +8,8 @@
     <string name="book_list">Book List</string>
     <string name="greeting_string">Hello, [NAME]</string>
     <string name="calendar">Advent Calendar</string>
+    <string name="shuffle_content">Do you want to shuffle your books?</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="shuffle_calendar_message">You currently haven\'t set up your calendar. Input below the number of days before each book to set up your calendar.</string>
 </resources>

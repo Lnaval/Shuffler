@@ -10,6 +10,9 @@ interface DateDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addAll(list: ArrayList<RoomDate>)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun add(date: RoomDate)
+
     @Query("SELECT * FROM date_table")
-    fun displayAll(): List<RoomDate>
+    fun getAll(): List<RoomDate>
 }

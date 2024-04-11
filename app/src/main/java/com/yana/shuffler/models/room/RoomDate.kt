@@ -8,5 +8,6 @@ import androidx.room.PrimaryKey
 data class RoomDate(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "date") val date: String,
-    @ColumnInfo(name = "book") val book: Int
+    @ColumnInfo(name = "book") val book: Int,
+    @ColumnInfo(name = "is_completed") val isCompleted: Boolean
 )
