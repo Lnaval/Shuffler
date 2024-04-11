@@ -3,42 +3,56 @@ package com.yana.shuffler.models
 import android.content.Context
 import android.util.Log
 import com.yana.shuffler.contracts.SearchContract
+import com.yana.shuffler.contracts.SearchContract.Model.OnFinishedSearchListener
 import com.yana.shuffler.models.room.AddedBookDatabase
 import com.yana.shuffler.models.room.RoomBook
 import com.yana.shuffler.network.OpenLibraryInterface
 import com.yana.shuffler.network.RetrofitInstance
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SearchModel : SearchContract.Model {
     private val apiService = RetrofitInstance.build().create(OpenLibraryInterface::class.java)
 
-    override fun getBooks(searchKey: String, pageNumber: Int, searchListener: SearchContract.Model.OnFinishedSearchListener
+    override fun getBooks(searchKey: String, pageNumber: Int, searchListener: OnFinishedSearchListener
     ) {
-        CoroutineScope(Dispatchers.Main).launch {
-            val response = apiService.searchBooks(title = searchKey, page = pageNumber)
-            response.let {
-                searchListener.onFinishSearch(response.books)
+        val data = apiService.searchBooks(searchKey, pageNumber)
+        data.enqueue(object : Callback<Books?> {
+            override fun onResponse(call: Call<Books?>, response: Response<Books?>) {
+                val result = response.body()
+                if(result!=null){
+                    searchListener.onFinishSearch(result.books)
+                }
             }
-        }
+
+            override fun onFailure(call: Call<Books?>, t: Throwable) {
+                Log.e("TAG", "failed $t")
+            }
+        })
     }
 
-    override fun addBookToList(book: Book, context: Context, searchListener: SearchContract.Model.OnFinishedSearchListener) {
+    override fun addBookToList(book: Book, context: Context, searchListener: OnFinishedSearchListener) {
         //add book to room database
         val bookToAdd = RoomBook(0, book.title, book.image, book.author.toString())
         AddedBookDatabase.getInstance(context).bookDao().addBook(bookToAdd)
         searchListener.onBookAdded()
     }
 
-    override fun getMoreBooks(searchKey: String, pageNumber: Int, searchListener: SearchContract.Model.OnFinishedSearchListener
+    override fun getMoreBooks(searchKey: String, pageNumber: Int, searchListener: OnFinishedSearchListener
     ) {
-        CoroutineScope(Dispatchers.Main).launch {
-            val response = apiService.searchBooks(title = searchKey, page = pageNumber)
-            response.let {
-                Log.e("TAG", "${response.books}")
-                searchListener.onFinishSearchMore(response.books)
+        val data = apiService.searchBooks(searchKey, pageNumber)
+        data.enqueue(object : Callback<Books?> {
+            override fun onResponse(call: Call<Books?>, response: Response<Books?>) {
+                val result = response.body()
+                if(result!=null){
+                    searchListener.onFinishSearchMore(result.books)
+                }
             }
-        }
+
+            override fun onFailure(call: Call<Books?>, t: Throwable) {
+                Log.e("TAG", "failed $t")
+            }
+        })
     }
 }

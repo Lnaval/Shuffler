@@ -7,12 +7,12 @@ import com.yana.shuffler.models.room.RoomDate
 class CalendarPresenter(
     private var mainView: CalendarContract.View?,
     private val model: CalendarContract.Model
-) : CalendarContract.Presenter, CalendarContract.Model.OnFinishListener{
-    override fun gettingCalendarData(dataForAdapter: ArrayList<RoomDate>) {
+) : CalendarContract.Presenter, CalendarContract.Model.OnFinishCalendarListener{
+    override fun finishedGettingCalendarData(dataForAdapter: ArrayList<RoomDate>) {
         mainView!!.setUpCalendarView(dataForAdapter)
     }
 
-    override fun gettingDateTableData(result: Boolean) {
+    override fun finishedGettingDateTableData(result: Boolean) {
         mainView!!.setUpShuffleDialog(result)
     }
 

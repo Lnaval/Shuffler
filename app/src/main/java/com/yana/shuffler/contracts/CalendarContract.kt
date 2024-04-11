@@ -5,14 +5,14 @@ import com.yana.shuffler.models.room.RoomDate
 
 interface CalendarContract {
     interface Model{
-        interface OnFinishListener{
-            fun gettingCalendarData(dataForAdapter: ArrayList<RoomDate>)
-            fun gettingDateTableData(result :Boolean)
+        interface OnFinishCalendarListener{
+            fun finishedGettingCalendarData(dataForAdapter: ArrayList<RoomDate>)
+            fun finishedGettingDateTableData(result :Boolean)
         }
 
-        fun getCalendarData(month: String, dayInMonth: Int, context: Context, onFinishListener: OnFinishListener)
-        fun getDateTableData(context: Context, onFinishListener: OnFinishListener)
-        fun shuffleRetrievedData(daysAfter: Int, context: Context, onFinishListener: OnFinishListener)
+        fun getCalendarData(month: String, dayInMonth: Int, context: Context, calendarListener: OnFinishCalendarListener)
+        fun getDateTableData(context: Context, calendarListener: OnFinishCalendarListener)
+        fun shuffleRetrievedData(daysAfter: Int, context: Context, calendarListener: OnFinishCalendarListener)
     }
 
     interface View{
