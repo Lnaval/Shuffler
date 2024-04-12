@@ -50,7 +50,7 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
     }
 
     override fun displayLoadedData(data: RoomBook) {
-        val imageUrl = "https://covers.openlibrary.org/b/olid/${data.image}-M.jpg"
+        val imageUrl = "https://covers.openlibrary.org/b/olid/${data.image}-L.jpg"
 
         binding.apply {
             Picasso.get()

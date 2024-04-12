@@ -1,9 +1,8 @@
 package com.yana.shuffler.views
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,6 @@ class CalendarAdapter(val onClickDate: ((id: Int) -> Unit)) : RecyclerView.Adapt
     }
     class CalendarViewHolder(binding: LayoutCalendarItemBinding): RecyclerView.ViewHolder(binding.root) {
         val date = binding.dateText
-        val test =binding.test
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
@@ -41,12 +39,11 @@ class CalendarAdapter(val onClickDate: ((id: Int) -> Unit)) : RecyclerView.Adapt
         val item = asyncListDiffer.currentList[position]
 
         if(item.book!=-1){
-            holder.test.isVisible = true
-            holder.test.setOnClickListener {
+            holder.date.setOnClickListener {
                 onClickDate.invoke(item.id)
             }
         } else {
-            holder.test.isInvisible = true
+            holder.date.setBackgroundColor(Color.WHITE)
         }
         holder.date.text = item.date
     }

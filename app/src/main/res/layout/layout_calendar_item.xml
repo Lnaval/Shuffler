@@ -4,20 +4,14 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
+        android:text="5"
+        android:gravity="center"
         android:id="@+id/dateText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="130dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-    <ImageView
-        android:visibility="invisible"
-        android:id="@+id/test"
-        android:textColor="@color/white"
-        android:background="#009688"
-        android:layout_width="120dp"
-        android:layout_height="100dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateText"/>
+        android:background="@drawable/gift" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
