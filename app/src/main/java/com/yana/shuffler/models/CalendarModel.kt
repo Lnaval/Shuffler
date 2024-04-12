@@ -12,18 +12,22 @@ import com.yana.shuffler.models.room.RoomDate
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class CalendarModel: CalendarContract.Model {
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getCalendarData(month: String, dayInMonth: Int, context: Context, calendarListener: OnFinishCalendarListener) {
-        val dayOfMonthStartAt = LocalDate.of(month.substring(3,7).toInt(), month.substring(0,2).toInt(), 1).dayOfWeek.value
+    override fun getCalendarData(date: Date, dayInMonth: Int, context: Context, calendarListener: OnFinishCalendarListener) {
+        val monthNumberFormat = SimpleDateFormat("MM-yyyy", Locale.getDefault())
+        val year = monthNumberFormat.format(date).substring(3,7)
+        val month = monthNumberFormat.format(date).substring(0,2)
+        val dayOfMonthStartAt = LocalDate.of(year.toInt(), month.toInt(), 1).dayOfWeek.value
 
         val dateTableList = AddedBookDatabase.getInstance(context).dateDao().getAll()
 
         val dateListTableForEachMonth = dateTableList.filter { listItem ->
             val checkDate = listItem.date.substring(0,3)+listItem.date.substring(6,10)
-            checkDate == month
+            checkDate == "$month-$year"
         }
 
         val dataForAdapter = getDataForCalendarAdapter(dateListTableForEachMonth, dayOfMonthStartAt, dayInMonth)

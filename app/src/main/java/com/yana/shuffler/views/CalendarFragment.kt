@@ -72,22 +72,20 @@ class CalendarFragment : Fragment(), CalendarContract.View {
             val monthTextFormat = SimpleDateFormat("MMMM", Locale.getDefault())
             binding.monthText.text = monthTextFormat.format(calendar.time)
 
-            val monthNumberFormat = SimpleDateFormat("MM-yyyy", Locale.getDefault())
-
-            calendarPresenter.requestCalendarData(monthNumberFormat.format(calendar.time), dayInMonth, requireContext())
+            calendarPresenter.requestCalendarData(calendar.time, dayInMonth, requireContext())
 
             binding.prevKey.setOnClickListener {
                 calendar.add(Calendar.MONTH, -1)
                 binding.monthText.text = monthTextFormat.format(calendar.time)
                 dayInMonth = calendar.getActualMaximum(Calendar.DATE)
-                calendarPresenter.requestCalendarData(monthNumberFormat.format(calendar.time), dayInMonth, requireContext())
+                calendarPresenter.requestCalendarData(calendar.time, dayInMonth, requireContext())
             }
 
             binding.nextKey.setOnClickListener {
                 calendar.add(Calendar.MONTH, 1)
                 binding.monthText.text = monthTextFormat.format(calendar.time)
                 dayInMonth = calendar.getActualMaximum(Calendar.DATE)
-                calendarPresenter.requestCalendarData(monthNumberFormat.format(calendar.time), dayInMonth, requireContext())
+                calendarPresenter.requestCalendarData(calendar.time, dayInMonth, requireContext())
             }
         }
     }

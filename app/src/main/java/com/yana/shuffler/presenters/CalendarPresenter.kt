@@ -3,6 +3,7 @@ package com.yana.shuffler.presenters
 import android.content.Context
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.models.room.RoomDate
+import java.util.Date
 
 class CalendarPresenter(
     private var mainView: CalendarContract.View?,
@@ -24,8 +25,8 @@ class CalendarPresenter(
         mainView!!.onCantBeOpened()
     }
 
-    override fun requestCalendarData(month: String, dayInMonth: Int, context: Context) {
-        model.getCalendarData(month, dayInMonth, context, this)
+    override fun requestCalendarData(date: Date, dayInMonth: Int, context: Context) {
+        model.getCalendarData(date, dayInMonth, context, this)
     }
 
     override fun requestDateTableData(context: Context) {
