@@ -17,12 +17,13 @@ import java.util.Locale
 class CalendarModel: CalendarContract.Model {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getCalendarData(month: String, dayInMonth: Int, context: Context, calendarListener: OnFinishCalendarListener) {
-        val dayOfMonthStartAt = LocalDate.of(LocalDate.now().year, month.toInt(), 1).dayOfWeek.value
+        val dayOfMonthStartAt = LocalDate.of(month.substring(3,7).toInt(), month.substring(0,2).toInt(), 1).dayOfWeek.value
 
         val dateTableList = AddedBookDatabase.getInstance(context).dateDao().getAll()
 
         val dateListTableForEachMonth = dateTableList.filter { listItem ->
-            listItem.date.substring(0,2)==month
+            val checkDate = listItem.date.substring(0,3)+listItem.date.substring(6,10)
+            checkDate == month
         }
 
         val dataForAdapter = getDataForCalendarAdapter(dateListTableForEachMonth, dayOfMonthStartAt, dayInMonth)
@@ -37,8 +38,13 @@ class CalendarModel: CalendarContract.Model {
     //add listener function?
     override fun shuffleRetrievedData(daysAfter: Int, context: Context, calendarListener: OnFinishCalendarListener) {
         val currentBookList = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList()
-        val shuffleList = currentBookList.shuffled()
-        assignBookToDate(daysAfter, shuffleList, context)
+
+        if(currentBookList.isNotEmpty()) {
+            val shuffleList = currentBookList.shuffled()
+            assignBookToDate(daysAfter, shuffleList, context)
+        } else {
+            //notify user that they need to add books for their calendar
+        }
     }
 
     override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener) {
@@ -95,5 +101,11 @@ class CalendarModel: CalendarContract.Model {
         }
         Log.e("counting", "$list")
         return list
+    }
+
+    //check if shuffled list is empty, if it is, then add to list button is not accessible
+    private fun checkIfShuffled(context: Context): Boolean{
+        val data = AddedBookDatabase.getInstance(context).dateDao().getAll()
+        return data.isEmpty()
     }
 }
