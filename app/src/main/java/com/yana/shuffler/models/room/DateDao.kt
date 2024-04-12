@@ -15,4 +15,7 @@ interface DateDao {
 
     @Query("SELECT * FROM date_table")
     fun getAll(): List<RoomDate>
+
+    @Query("SELECT * FROM date_table WHERE id LIKE :id")
+    fun getIndividual(id: Int): RoomDate
 }

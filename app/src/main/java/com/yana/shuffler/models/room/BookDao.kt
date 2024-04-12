@@ -16,4 +16,7 @@ interface BookDao {
 
     @Query("SELECT * FROM book_table")
     fun getAllBookInList(): List<RoomBook>
+
+    @Query("SELECT * FROM book_table WHERE id LIKE :bookId")
+    fun getBook(bookId: Int): RoomBook
 }

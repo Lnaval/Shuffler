@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
+import com.yana.shuffler.MainActivity
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.databinding.DialogShuffleBinding
 import com.yana.shuffler.databinding.FragmentCalendarBinding
@@ -61,6 +62,7 @@ class CalendarFragment : Fragment(), CalendarContract.View {
                 val daysAfter = sBDialogBinding.daysAfterInput.text.toString().toInt()
                 calendarPresenter.shuffleList(daysAfter, requireContext())
                 shuffleBooksDialog.cancel()
+                calendarPresenter.requestDateTableData(requireContext())
             }
         } else {
             //display calendar
@@ -91,8 +93,10 @@ class CalendarFragment : Fragment(), CalendarContract.View {
     }
 
     override fun setUpCalendarView(dataForAdapter: ArrayList<RoomDate>) {
+        val calendar = Calendar.getInstance()
+        val dateToday = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(calendar.time)
         val calendarAdapter = CalendarAdapter{
-            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
+            calendarPresenter.checkIfBookCanBeOpened(dateToday, it, requireContext())
         }
 
         calendarAdapter.asyncListDiffer.submitList(dataForAdapter)
@@ -101,5 +105,14 @@ class CalendarFragment : Fragment(), CalendarContract.View {
             adapter = calendarAdapter
             layoutManager = GridLayoutManager(requireContext(), 7)
         }
+    }
+
+    override fun displayBookForTheDay(bookId: Int) {
+        val fragment = ShowBookOnDateFragment.newInstance(bookId)
+        (activity as MainActivity).replaceFragment(fragment)
+    }
+
+    override fun onCantBeOpened() {
+        Toast.makeText(requireContext(), "Too early to open", Toast.LENGTH_SHORT).show()
     }
 }

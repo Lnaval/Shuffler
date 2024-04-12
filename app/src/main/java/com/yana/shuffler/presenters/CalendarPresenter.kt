@@ -16,12 +16,24 @@ class CalendarPresenter(
         mainView!!.setUpShuffleDialog(result)
     }
 
+    override fun canBeOpened(bookId: Int) {
+        mainView!!.displayBookForTheDay(bookId)
+    }
+
+    override fun cannotBeOpened() {
+        mainView!!.onCantBeOpened()
+    }
+
     override fun requestCalendarData(month: String, dayInMonth: Int, context: Context) {
         model.getCalendarData(month, dayInMonth, context, this)
     }
 
     override fun requestDateTableData(context: Context) {
         model.getDateTableData(context, this)
+    }
+
+    override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context) {
+        model.checkIfBookCanBeOpened(dateToday, bookDateId, context, this)
     }
 
     override fun shuffleList(daysAfter: Int, context: Context) {

@@ -41,6 +41,16 @@ class CalendarModel: CalendarContract.Model {
         assignBookToDate(daysAfter, shuffleList, context)
     }
 
+    override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener) {
+        val item = AddedBookDatabase.getInstance(context).dateDao().getIndividual(bookDateId)
+
+        if(item.date <= dateToday){
+            calendarListener.canBeOpened(item.book)
+        } else {
+            calendarListener.cannotBeOpened()
+        }
+    }
+
     private fun assignBookToDate(daysAfter: Int, shuffledList: List<RoomBook>, context: Context) {
         var count = 0
         val newDateList = ArrayList<RoomDate>()
