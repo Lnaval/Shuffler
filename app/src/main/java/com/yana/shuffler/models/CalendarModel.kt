@@ -3,6 +3,7 @@ package com.yana.shuffler.models
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.contracts.CalendarContract.Model.OnFinishCalendarListener
@@ -51,11 +52,11 @@ class CalendarModel: CalendarContract.Model {
         }
     }
 
-    override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener) {
+    override fun checkIfBookCanBeOpened(view: View, dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener) {
         val item = AddedBookDatabase.getInstance(context).dateDao().getIndividual(bookDateId)
 
         if(item.date <= dateToday){
-            calendarListener.canBeOpened(item.book)
+            calendarListener.canBeOpened(item.book, view)
         } else {
             calendarListener.cannotBeOpened()
         }

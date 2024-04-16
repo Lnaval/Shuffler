@@ -12,4 +12,19 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="shuffle_calendar_message">You currently haven\'t set up your calendar. Input below the number of days before each book to set up your calendar.</string>
+    <string name="home">Home</string>
+    <string name="today_s_pick">Today\'s pick</string>
+    <string name="prev">Prev</string>
+    <string name="month">MONTH</string>
+    <string name="next">Next</string>
+    <string name="sun">SUN</string>
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thu">THU</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
+    <string name="finished_reading">Finished reading</string>
+    <string name="see_all">See All</string>
+    <string name="my_books">My Books</string>
 </resources>

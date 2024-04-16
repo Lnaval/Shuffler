@@ -6,17 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.CalendarFragment"
     android:background="@color/white">
-    <Button
+    <ImageButton
         android:id="@+id/prevKey"
-        android:text="Prev"
-        android:layout_width="100dp"
+        android:layout_width="50dp"
         android:layout_height="50dp"
+        android:background="@drawable/previous_icon"
+        android:theme="@style/Base.Theme.Shuffler"
         app:layout_constraintEnd_toStartOf="@id/monthText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
         android:id="@+id/monthText"
-        android:text="MONTH"
+        android:text="@string/month"
+        android:textSize="18sp"
+        android:fontFamily="@font/montserrat_bold"
         android:gravity="center"
         android:textStyle="bold"
         android:layout_width="wrap_content"
@@ -24,11 +27,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-    <Button
+    <ImageButton
         android:id="@+id/nextKey"
-        android:text="Next"
-        android:layout_width="100dp"
+        android:layout_width="50dp"
         android:layout_height="50dp"
+        android:background="@drawable/next_icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/monthText"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -47,63 +50,70 @@
 
         <TextView
             android:id="@+id/sunday"
+            android:fontFamily="@font/opensans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="SUN"
+            android:text="@string/sun"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/monday"
+            android:fontFamily="@font/opensans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MON"
+            android:text="@string/mon"
             app:layout_constraintEnd_toStartOf="@id/tue"
             app:layout_constraintStart_toEndOf="@id/sunday"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tue"
+            android:fontFamily="@font/opensans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TUE"
+            android:text="@string/tue"
             app:layout_constraintEnd_toStartOf="@+id/wednesday"
             app:layout_constraintStart_toEndOf="@id/monday"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/wednesday"
+            android:fontFamily="@font/opensans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WED"
+            android:text="@string/wed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/thursday"
+            android:fontFamily="@font/opensans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="THU"
+            android:text="@string/thu"
             app:layout_constraintEnd_toStartOf="@id/friday"
             app:layout_constraintStart_toEndOf="@+id/wednesday"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/friday"
+            android:fontFamily="@font/opensans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FRI"
+            android:text="@string/fri"
             app:layout_constraintEnd_toStartOf="@id/saturday"
             app:layout_constraintStart_toEndOf="@id/thursday"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/saturday"
+            android:fontFamily="@font/opensans_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SAT"
+            android:text="@string/sat"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/friday"
             app:layout_constraintTop_toTopOf="parent" />
@@ -113,6 +123,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="10dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="7"
         tools:listitem="@layout/layout_calendar_item"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

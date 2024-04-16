@@ -10,11 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.picasso.Picasso
-import android.widget.SearchView
 import androidx.core.view.isVisible
 import com.yana.shuffler.R
 import com.yana.shuffler.contracts.SearchContract
@@ -66,6 +66,7 @@ class SearchFragment : Fragment(), SearchContract.View {
         binding.bookSearchResults.addOnScrollListener(object : EndlessScrollListener() {
             override fun onLoadMore(page: Int) {
                 searchPresenter.searchMore(searchKey, page)
+                binding.progressIndicator.isVisible = true
             }
         })
     }
@@ -103,6 +104,7 @@ class SearchFragment : Fragment(), SearchContract.View {
         val positionStart = searchedBooks.itemCount - books.size
         Log.e("TAG", "Fragment: $positionStart | ${books.size}")
         searchedBooks.notifyItemRangeInserted(positionStart, books.size)
+        binding.progressIndicator.isVisible = false
     }
 
     override fun showNoInternetDialog() {

@@ -1,6 +1,7 @@
 package com.yana.shuffler.presenters
 
 import android.content.Context
+import android.view.View
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.models.room.RoomDate
 import java.util.Date
@@ -17,8 +18,8 @@ class CalendarPresenter(
         mainView!!.setUpShuffleDialog(result)
     }
 
-    override fun canBeOpened(bookId: Int) {
-        mainView!!.displayBookForTheDay(bookId)
+    override fun canBeOpened(bookId: Int, view: View) {
+        mainView!!.displayBookForTheDay(bookId, view)
     }
 
     override fun cannotBeOpened() {
@@ -33,8 +34,8 @@ class CalendarPresenter(
         model.getDateTableData(context, this)
     }
 
-    override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context) {
-        model.checkIfBookCanBeOpened(dateToday, bookDateId, context, this)
+    override fun checkIfBookCanBeOpened(view: View, dateToday: String, bookDateId: Int, context: Context) {
+        model.checkIfBookCanBeOpened(view, dateToday, bookDateId, context, this)
     }
 
     override fun shuffleList(daysAfter: Int, context: Context) {

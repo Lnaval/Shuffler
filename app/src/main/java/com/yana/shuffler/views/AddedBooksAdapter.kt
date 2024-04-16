@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import com.yana.shuffler.R
 import com.yana.shuffler.databinding.LayoutUserAddedBooksBinding
 import com.yana.shuffler.models.room.RoomBook
@@ -47,13 +47,18 @@ class AddedBooksAdapter : RecyclerView.Adapter<AddedBooksAdapter.AddedViewHolder
         holder.title.text = item.title
         holder.author.text = item.author
         val imageUrl = "https://covers.openlibrary.org/b/olid/${item.image}-M.jpg"
-        Picasso.get()
+//        Picasso.get()
+//            .load(imageUrl)
+//            .resize(100, 150)
+//            .centerCrop()
+//            .placeholder(R.drawable.ic_launcher_foreground)
+//            .error(R.drawable.ic_launcher_foreground)
+//            .into(holder.image)
+
+        Glide.with(holder.image)
             .load(imageUrl)
-            .resize(100, 150)
             .centerCrop()
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .error(R.drawable.ic_launcher_foreground)
+            .thumbnail(Glide.with(holder.image).load(R.drawable.image_loading))
             .into(holder.image)
     }
-
 }

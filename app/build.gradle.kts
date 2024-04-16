@@ -1,3 +1,8 @@
+import org.gradle.api.JavaVersion
+import org.gradle.kotlin.dsl.android
+import org.gradle.kotlin.dsl.kotlinOptions
+import org.gradle.kotlin.dsl.libs
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidApplication)
@@ -66,6 +71,7 @@ dependencies {
 
     //image
     implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     //room
     val room_version = "2.6.1"

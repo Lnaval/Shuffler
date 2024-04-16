@@ -19,4 +19,12 @@ interface BookDao {
 
     @Query("SELECT * FROM book_table WHERE id LIKE :bookId")
     fun getBook(bookId: Int): RoomBook
+
+    @Query("SELECT * FROM book_table LIMIT 5")
+    fun getFiveBooks(): List<RoomBook>
+
+    @Query("SELECT * FROM book_table " +
+            "INNER JOIN date_table ON date_table.book = book_table.id " +
+            "WHERE date_table.date <= :date")
+    fun getTodayBook(date: String): RoomBook
 }

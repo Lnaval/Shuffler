@@ -12,6 +12,7 @@ import android.view.Window
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yana.shuffler.MainActivity
+import com.yana.shuffler.R
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.databinding.DialogShuffleBinding
 import com.yana.shuffler.databinding.FragmentCalendarBinding
@@ -93,8 +94,8 @@ class CalendarFragment : Fragment(), CalendarContract.View {
     override fun setUpCalendarView(dataForAdapter: ArrayList<RoomDate>) {
         val calendar = Calendar.getInstance()
         val dateToday = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(calendar.time)
-        val calendarAdapter = CalendarAdapter{
-            calendarPresenter.checkIfBookCanBeOpened(dateToday, it, requireContext())
+        val calendarAdapter = CalendarAdapter { date, view ->
+            calendarPresenter.checkIfBookCanBeOpened(view, dateToday, date, requireContext())
         }
 
         calendarAdapter.asyncListDiffer.submitList(dataForAdapter)
@@ -105,9 +106,9 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         }
     }
 
-    override fun displayBookForTheDay(bookId: Int) {
+    override fun displayBookForTheDay(bookId: Int, view: View) {
         val fragment = ShowBookOnDateFragment.newInstance(bookId)
-        (activity as MainActivity).replaceFragment(fragment)
+        (activity as MainActivity).replaceFragment(fragment, R.id.navCalendar)
     }
 
     override fun onCantBeOpened() {

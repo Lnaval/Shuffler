@@ -9,27 +9,27 @@ interface CalendarContract {
         interface OnFinishCalendarListener{
             fun finishedGettingCalendarData(dataForAdapter: ArrayList<RoomDate>)
             fun finishedGettingDateTableData(result :Boolean)
-            fun canBeOpened(bookId: Int)
+            fun canBeOpened(bookId: Int, view: android.view.View)
             fun cannotBeOpened()
         }
 
         fun getCalendarData(date: Date, dayInMonth: Int, context: Context, calendarListener: OnFinishCalendarListener)
         fun getDateTableData(context: Context, calendarListener: OnFinishCalendarListener)
         fun shuffleRetrievedData(daysAfter: Int, context: Context, calendarListener: OnFinishCalendarListener)
-        fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener)
+        fun checkIfBookCanBeOpened(view: android.view.View, dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener)
     }
 
     interface View{
         fun setUpShuffleDialog(result: Boolean)
         fun setUpCalendarView(dataForAdapter: ArrayList<RoomDate>)
-        fun displayBookForTheDay(bookId: Int)
+        fun displayBookForTheDay(bookId: Int, view: android.view.View)
         fun onCantBeOpened()
     }
 
     interface Presenter{
         fun requestCalendarData(date: Date, dayInMonth: Int, context: Context)
         fun requestDateTableData(context: Context)
-        fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context)
+        fun checkIfBookCanBeOpened(view: android.view.View, dateToday: String, bookDateId: Int, context: Context)
         fun shuffleList(daysAfter: Int, context: Context)
     }
 }
