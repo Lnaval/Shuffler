@@ -13,6 +13,7 @@
             android:layout_width="130dp"
             android:layout_height="200dp"
             app:cardCornerRadius="10dp"
+            android:backgroundTint="@color/black"
             android:elevation="5dp">
             <ImageView
                 android:id="@+id/bookImage"

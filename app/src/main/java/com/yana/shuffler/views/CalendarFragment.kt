@@ -94,8 +94,8 @@ class CalendarFragment : Fragment(), CalendarContract.View {
     override fun setUpCalendarView(dataForAdapter: ArrayList<RoomDate>) {
         val calendar = Calendar.getInstance()
         val dateToday = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(calendar.time)
-        val calendarAdapter = CalendarAdapter { date, view ->
-            calendarPresenter.checkIfBookCanBeOpened(view, dateToday, date, requireContext())
+        val calendarAdapter = CalendarAdapter {
+            calendarPresenter.checkIfBookCanBeOpened(dateToday, it, requireContext())
         }
 
         calendarAdapter.asyncListDiffer.submitList(dataForAdapter)
@@ -106,7 +106,7 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         }
     }
 
-    override fun displayBookForTheDay(bookId: Int, view: View) {
+    override fun displayBookForTheDay(bookId: Int) {
         val fragment = ShowBookOnDateFragment.newInstance(bookId)
         (activity as MainActivity).replaceFragment(fragment, R.id.navCalendar)
     }

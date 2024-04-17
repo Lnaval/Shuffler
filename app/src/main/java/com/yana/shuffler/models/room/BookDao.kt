@@ -24,7 +24,7 @@ interface BookDao {
     fun getFiveBooks(): List<RoomBook>
 
     @Query("SELECT * FROM book_table " +
-            "INNER JOIN date_table ON date_table.book = book_table.id " +
+            "INNER JOIN date_table ON book_table.id = date_table.book " +
             "WHERE date_table.date <= :date")
     fun getTodayBook(date: String): RoomBook
 }

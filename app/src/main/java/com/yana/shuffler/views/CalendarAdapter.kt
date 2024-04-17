@@ -2,7 +2,6 @@ package com.yana.shuffler.views
 
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -10,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yana.shuffler.databinding.LayoutCalendarItemBinding
 import com.yana.shuffler.models.room.RoomDate
 
-class CalendarAdapter(val onClickDate: ((id: Int, view: View) -> Unit)) : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
+class CalendarAdapter(val onClickDate: ((id: Int) -> Unit)) : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
     private val diffCallback = object : DiffUtil.ItemCallback<RoomDate>(){
         override fun areItemsTheSame(oldItem: RoomDate, newItem: RoomDate): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.dateId == newItem.dateId
         }
 
         override fun areContentsTheSame(oldItem: RoomDate, newItem: RoomDate): Boolean {
@@ -41,7 +40,7 @@ class CalendarAdapter(val onClickDate: ((id: Int, view: View) -> Unit)) : Recycl
 
         if(item.book!=-1){
             holder.date.setOnClickListener {
-                onClickDate.invoke(item.id, holder.date)
+                onClickDate.invoke(item.dateId)
             }
         } else {
             holder.date.setBackgroundColor(Color.WHITE)

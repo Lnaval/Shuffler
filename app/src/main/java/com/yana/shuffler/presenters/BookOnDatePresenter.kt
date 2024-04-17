@@ -12,7 +12,15 @@ class BookOnDatePresenter(
         mainView!!.displayLoadedData(data)
     }
 
+    override fun updateBookStatusResult(result: Boolean) {
+        mainView!!.displayUpdatedBookStatus(result)
+    }
+
     override fun requestBookOnDateData(context: Context, id: Int) {
         model.loadBookOnDateData(context, id, this)
+    }
+
+    override fun requestUpdateBookStatus(context: Context, dateId: Int) {
+        model.updateBookStatus(context, dateId, this)
     }
 }

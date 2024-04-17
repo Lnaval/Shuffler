@@ -1,6 +1,5 @@
 package com.yana.shuffler.views
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -45,7 +44,6 @@ class HomeAdapter: RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val item = asyncListDiffer.currentList[position]
-        Log.e("TAG", "$item")
 
         if(item!=null){
             holder.title.text = item.title
