@@ -38,11 +38,15 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
     }
 
     override fun setUpAddedBooksAdapter(books: List<RoomBook>) {
-        val addedBooksAdapter = AddedBooksAdapter()
-        addedBooksAdapter.asyncListDiffer.submitList(books)
-        binding.addedBooks.apply {
-            adapter = addedBooksAdapter
-            layoutManager = GridLayoutManager(requireContext(), 3)
+        if(books.isEmpty()){
+            binding.emptyBookDialogue.visibility = View.VISIBLE
+        } else {
+            val addedBooksAdapter = AddedBooksAdapter()
+            addedBooksAdapter.asyncListDiffer.submitList(books)
+            binding.addedBooks.apply {
+                adapter = addedBooksAdapter
+                layoutManager = GridLayoutManager(requireContext(), 3)
+            }
         }
     }
 }

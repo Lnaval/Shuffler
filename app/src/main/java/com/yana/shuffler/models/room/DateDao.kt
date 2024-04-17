@@ -33,4 +33,7 @@ interface DateDao {
 
     @Update
     fun updateBookStatus(roomDate: RoomDate)
+
+    @Query("SELECT EXISTS(SELECT * FROM date_table)")
+    fun checkIfTableExists() : Boolean
 }

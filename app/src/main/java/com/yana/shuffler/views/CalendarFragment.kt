@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.yana.shuffler.MainActivity
 import com.yana.shuffler.R
 import com.yana.shuffler.contracts.CalendarContract
+import com.yana.shuffler.databinding.DialogEmptyBookListBinding
 import com.yana.shuffler.databinding.DialogShuffleBinding
 import com.yana.shuffler.databinding.FragmentCalendarBinding
 import com.yana.shuffler.models.CalendarModel
@@ -111,7 +112,23 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         (activity as MainActivity).replaceFragment(fragment, R.id.navCalendar)
     }
 
-    override fun onCantBeOpened() {
-        Toast.makeText(requireContext(), "Too early to open", Toast.LENGTH_SHORT).show()
+    override fun onError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun displayMessageWhenBookIsEmpty() {
+        val cannotShuffleDialog = Dialog(requireContext())
+        val cSDialogShuffleBinding = DialogEmptyBookListBinding.inflate(layoutInflater, null, false)
+        cannotShuffleDialog.apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            setCancelable(false)
+            setContentView(cSDialogShuffleBinding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
+        }
+        cSDialogShuffleBinding.goToSearch.setOnClickListener {
+            (activity as MainActivity).replaceFragment(SearchFragment(), R.id.navSearch)
+            cannotShuffleDialog.cancel()
+        }
     }
 }

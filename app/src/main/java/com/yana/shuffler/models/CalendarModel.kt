@@ -35,30 +35,34 @@ class CalendarModel: CalendarContract.Model {
     }
 
     override fun getDateTableData(context: Context, calendarListener: OnFinishCalendarListener) {
-        val result = AddedBookDatabase.getInstance(context).dateDao().getAll()
-        calendarListener.finishedGettingDateTableData(result.isNotEmpty())
+        val check = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList()
+        if(check.isEmpty()){
+            calendarListener.checkBookListSize()
+        } else {
+            val result = AddedBookDatabase.getInstance(context).dateDao().getAll()
+            calendarListener.finishedGettingDateTableData(result.isNotEmpty())
+        }
     }
 
     //add listener function?
     override fun shuffleRetrievedData(daysAfter: Int, context: Context, calendarListener: OnFinishCalendarListener) {
         val currentBookList = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList()
-
-        if(currentBookList.isNotEmpty()) {
+        if (daysAfter != 0) {
             val shuffleList = currentBookList.shuffled()
             assignBookToDate(daysAfter, shuffleList, context)
         } else {
-            //notify user that they need to add books for their calendar
+            calendarListener.errorMessage("Invalid input")
         }
     }
 
     override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener) {
         val item = AddedBookDatabase.getInstance(context).dateDao().getIndividual(bookDateId)
 
-//        if(item.date <= dateToday){
-            calendarListener.canBeOpened(item.book)
-//        } else {
-//            calendarListener.cannotBeOpened()
-//        }
+        if(item.date <= dateToday){
+            calendarListener.canBookOnDateBeOpen(item.book)
+        } else {
+            calendarListener.errorMessage("Too early to open")
+        }
     }
 
     private fun assignBookToDate(daysAfter: Int, shuffledList: List<RoomBook>, context: Context) {
@@ -105,11 +109,5 @@ class CalendarModel: CalendarContract.Model {
         }
         Log.e("counting", "$list")
         return list
-    }
-
-    //check if shuffled list is empty, if it is, then add to list button is not accessible
-    private fun checkIfShuffled(context: Context): Boolean{
-        val data = AddedBookDatabase.getInstance(context).dateDao().getAll()
-        return data.isEmpty()
     }
 }

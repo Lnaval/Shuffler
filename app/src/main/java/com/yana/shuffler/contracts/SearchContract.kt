@@ -7,7 +7,7 @@ interface SearchContract {
     interface Model{
         interface OnFinishedSearchListener{
             fun onFinishSearch(books: ArrayList<Book>)
-            fun onBookAdded()
+            fun onBookAdded(result: String)
             fun onFinishSearchMore(books: ArrayList<Book>)
         }
         fun getBooks(searchKey: String, pageNumber: Int, searchListener: OnFinishedSearchListener)
@@ -23,7 +23,7 @@ interface SearchContract {
 
     interface View{
         fun setUpSearchedItemsList(books: ArrayList<Book>)
-        fun notifyAddedBookResult()
+        fun notifyAddedBookResult(result: String)
         fun addMoreBookResults(books: ArrayList<Book>)
         fun showNoInternetDialog()
     }

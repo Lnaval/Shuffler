@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +22,7 @@ import com.yana.shuffler.databinding.DialogNoInternetBinding
 import com.yana.shuffler.databinding.FragmentSearchBinding
 import com.yana.shuffler.models.Book
 import com.yana.shuffler.models.SearchModel
+import com.yana.shuffler.models.room.AddedBookDatabase
 import com.yana.shuffler.presenters.SearchPresenter
 
 class SearchFragment : Fragment(), SearchContract.View {
@@ -78,8 +78,6 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     override fun setUpSearchedItemsList(books: ArrayList<Book>) {
         searchedBooks = SearchedBooksAdapter{
-            //open dialog sheet to show more book details
-            //dialog sheet must contain an add to list button to add the book to the database
             setUpDialogBottomSheetBookDetails(it)
         }
         searchedBooks.saveData(books)
@@ -90,19 +88,14 @@ class SearchFragment : Fragment(), SearchContract.View {
         binding.progressIndicator.isVisible = false
     }
 
-    override fun notifyAddedBookResult() {
-        //dismiss bottom sheet dialog when book is added
-        //[have something to handle when the book isn't successfully added]
+    override fun notifyAddedBookResult(result: String) {
         mBottomSheetDialog.dismiss()
-
-        Toast.makeText(requireContext(), "the book has been added", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show()
     }
 
     override fun addMoreBookResults(books: ArrayList<Book>) {
-        Log.e("TAG", "added more books")
         searchedBooks.saveData(books)
         val positionStart = searchedBooks.itemCount - books.size
-        Log.e("TAG", "Fragment: $positionStart | ${books.size}")
         searchedBooks.notifyItemRangeInserted(positionStart, books.size)
         binding.progressIndicator.isVisible = false
     }
@@ -141,10 +134,18 @@ class SearchFragment : Fragment(), SearchContract.View {
                 .error(R.drawable.ic_launcher_foreground)
                 .into(bookImage)
 
+            if(doesShuffledBookListExists()){
+                buttonAddToList.visibility = View.INVISIBLE
+            }
+
             buttonAddToList.setOnClickListener{
                 searchPresenter.addBook(book, requireContext())
             }
         }
         mBottomSheetDialog.show()
+    }
+
+    private fun doesShuffledBookListExists(): Boolean {
+        return AddedBookDatabase.getInstance(requireContext()).dateDao().checkIfTableExists()
     }
 }

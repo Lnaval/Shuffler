@@ -9,8 +9,9 @@ interface CalendarContract {
         interface OnFinishCalendarListener{
             fun finishedGettingCalendarData(dataForAdapter: ArrayList<RoomDate>)
             fun finishedGettingDateTableData(result :Boolean)
-            fun canBeOpened(bookId: Int)
-            fun cannotBeOpened()
+            fun canBookOnDateBeOpen(bookId: Int)
+            fun errorMessage(message: String)
+            fun checkBookListSize()
         }
 
         fun getCalendarData(date: Date, dayInMonth: Int, context: Context, calendarListener: OnFinishCalendarListener)
@@ -23,7 +24,8 @@ interface CalendarContract {
         fun setUpShuffleDialog(result: Boolean)
         fun setUpCalendarView(dataForAdapter: ArrayList<RoomDate>)
         fun displayBookForTheDay(bookId: Int)
-        fun onCantBeOpened()
+        fun onError(message: String)
+        fun displayMessageWhenBookIsEmpty()
     }
 
     interface Presenter{

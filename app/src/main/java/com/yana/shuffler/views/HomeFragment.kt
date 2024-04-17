@@ -58,7 +58,7 @@ class HomeFragment : Fragment(), HomeContract.View {
 
         binding.bookCover.setOnClickListener {
             val fragment = ShowBookOnDateFragment.newInstance(book.id)
-            (activity as MainActivity).replaceFragment(fragment, R.id.navHome)
+            (activity as MainActivity).replaceFragment(fragment, R.id.navCalendar)
         }
     }
 

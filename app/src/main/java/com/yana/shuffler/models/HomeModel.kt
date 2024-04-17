@@ -12,7 +12,9 @@ class HomeModel: HomeContract.Model {
     ) {
         val bookData = AddedBookDatabase.getInstance(context).bookDao().getTodayBook(dateToday)
 
-        homeListener.bookDataByDateResult(bookData)
+        if(bookData!=null){
+            homeListener.bookDataByDateResult(bookData)
+        }
     }
 
     override fun getFiveBooks(context: Context, homeListener: HomeContract.Model.HomeListener) {

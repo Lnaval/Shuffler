@@ -33,10 +33,16 @@ class SearchModel : SearchContract.Model {
     }
 
     override fun addBookToList(book: Book, context: Context, searchListener: OnFinishedSearchListener) {
+        val bookDao = AddedBookDatabase.getInstance(context).bookDao()
         //add book to room database
         val bookToAdd = RoomBook(0, book.title, book.image, book.author.toString())
-        AddedBookDatabase.getInstance(context).bookDao().addBook(bookToAdd)
-        searchListener.onBookAdded()
+
+        if(bookDao.checkIfBookExists(bookToAdd.title)){
+            searchListener.onBookAdded("Book Already Added")
+        } else {
+            AddedBookDatabase.getInstance(context).bookDao().addBook(bookToAdd)
+            searchListener.onBookAdded("Book Added")
+        }
     }
 
     override fun getMoreBooks(searchKey: String, pageNumber: Int, searchListener: OnFinishedSearchListener

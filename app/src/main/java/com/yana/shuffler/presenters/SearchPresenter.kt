@@ -24,8 +24,8 @@ class SearchPresenter(
         mainView!!.setUpSearchedItemsList(books)
     }
 
-    override fun onBookAdded() {
-        mainView!!.notifyAddedBookResult()
+    override fun onBookAdded(result: String) {
+        mainView!!.notifyAddedBookResult(result)
     }
 
     override fun onFinishSearchMore(books: ArrayList<Book>) {

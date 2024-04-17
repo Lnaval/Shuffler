@@ -6,35 +6,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.CalendarFragment"
     android:background="@color/white">
-    <ImageButton
-        android:id="@+id/prevKey"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/previous_icon"
-        android:theme="@style/Base.Theme.Shuffler"
-        app:layout_constraintEnd_toStartOf="@id/monthText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <TextView
-        android:id="@+id/monthText"
-        android:text="@string/month"
-        android:textSize="18sp"
-        android:fontFamily="@font/montserrat_bold"
-        android:gravity="center"
-        android:textStyle="bold"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_marginTop="20dp"
+        android:id="@+id/layoutTop"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <ImageButton
-        android:id="@+id/nextKey"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/next_icon"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/monthText"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageButton
+            android:id="@+id/prevKey"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/previous_icon"
+            android:theme="@style/Base.Theme.Shuffler"
+            app:layout_constraintEnd_toStartOf="@id/monthText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:id="@+id/monthText"
+            android:text="@string/month"
+            android:textSize="18sp"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <ImageButton
+            android:id="@+id/nextKey"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/next_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/monthText"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/weekText"
@@ -46,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/monthText">
+        app:layout_constraintTop_toBottomOf="@id/layoutTop">
 
         <TextView
             android:id="@+id/sunday"

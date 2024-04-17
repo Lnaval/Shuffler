@@ -17,12 +17,16 @@ class CalendarPresenter(
         mainView!!.setUpShuffleDialog(result)
     }
 
-    override fun canBeOpened(bookId: Int) {
+    override fun canBookOnDateBeOpen(bookId: Int) {
         mainView!!.displayBookForTheDay(bookId)
     }
 
-    override fun cannotBeOpened() {
-        mainView!!.onCantBeOpened()
+    override fun errorMessage(message: String) {
+        mainView!!.onError(message)
+    }
+
+    override fun checkBookListSize() {
+        mainView!!.displayMessageWhenBookIsEmpty()
     }
 
     override fun requestCalendarData(date: Date, dayInMonth: Int, context: Context) {

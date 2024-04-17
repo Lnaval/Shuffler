@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.AddedBooksFragment">
+    <TextView
+        android:id="@+id/textTitle"
+        android:text="My books"
+        android:fontFamily="@font/montserrat_bold"
+        android:textSize="18sp"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/addedBooks"
@@ -13,7 +24,18 @@
         tools:listitem="@layout/layout_user_added_books"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
+        app:layout_constraintTop_toBottomOf="@id/textTitle"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:text="Populate your book list"
+        android:id="@+id/emptyBookDialogue"
+        android:visibility="invisible"
+        android:fontFamily="@font/opensans_condensed_regular"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
