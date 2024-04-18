@@ -36,4 +36,7 @@
     <string name="bookshelf">Bookshelf</string>
     <string name="populate_your_book_list">Populate your book list</string>
     <string name="image_description">Image description</string>
+    <string name="year_published">Year Published:</string>
+    <string name="subject">Subject:</string>
+    <string name="add_to_list">Add to List</string>
 </resources>

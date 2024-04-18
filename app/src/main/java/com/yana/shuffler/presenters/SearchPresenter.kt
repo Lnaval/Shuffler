@@ -12,12 +12,23 @@ class SearchPresenter(
         model.getBooks(searchKey, pageNumber, this)
     }
 
-    override fun addBook(book: Book, context: Context) {
-        model.addBookToList(book, context, this)
+    override fun addBook(
+        title: String,
+        author: String,
+        firstYearPublished: String,
+        imageUrl: String,
+        subjects: String,
+        context: Context
+    ) {
+        model.addBookToList(title, author, firstYearPublished, imageUrl, subjects, context, this)
     }
 
     override fun searchMore(searchKey: String, pageNumber: Int) {
         model.getMoreBooks(searchKey, pageNumber,this)
+    }
+
+    override fun viewBook(book: Book) {
+        model.viewBook(book, this)
     }
 
     override fun onFinishSearch(books: ArrayList<Book>) {
@@ -30,5 +41,15 @@ class SearchPresenter(
 
     override fun onFinishSearchMore(books: ArrayList<Book>) {
         mainView!!.addMoreBookResults(books)
+    }
+
+    override fun onViewBook(
+        title: String,
+        author: String,
+        firstYearPublished: String,
+        imageUrl: String,
+        subjects: String
+    ) {
+        mainView!!.setUpDialogBottomSheetBookDetails(title, author, firstYearPublished, imageUrl, subjects)
     }
 }

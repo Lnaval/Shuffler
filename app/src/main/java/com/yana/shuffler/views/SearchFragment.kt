@@ -78,7 +78,7 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     override fun setUpSearchedItemsList(books: ArrayList<Book>) {
         searchedBooks = SearchedBooksAdapter{
-            setUpDialogBottomSheetBookDetails(it)
+            searchPresenter.viewBook(it)
         }
         searchedBooks.saveData(books)
         binding.bookSearchResults.apply {
@@ -113,18 +113,22 @@ class SearchFragment : Fragment(), SearchContract.View {
         }
     }
 
-    private fun setUpDialogBottomSheetBookDetails(book: Book){
+    override fun setUpDialogBottomSheetBookDetails(
+        title: String,
+        author: String,
+        firstYearPublished: String,
+        imageUrl: String,
+        subjects: String
+    ) {
         mBottomSheetDialog = BottomSheetDialog(requireContext())
         val mBottomSheetBinding = DialogBottomSheetBookDetailsBinding.inflate(layoutInflater, null, false)
 
         mBottomSheetDialog.setContentView(mBottomSheetBinding.root)
         mBottomSheetBinding.apply {
-            bookTitle.text = book.title
-            bookAuthor.text = if(book.author.isNullOrEmpty()) "Not Found" else book.author.toString()
-            bookPublished.text = if(book.firstPublishYear==null || book.firstPublishYear==0) "Not Found" else book.firstPublishYear.toString()
-            bookSubject.text = if(book.subject.isNullOrEmpty()) "Not Found" else book.subject.toString()
-
-            val imageUrl = "https://covers.openlibrary.org/b/olid/${book.image}-M.jpg"
+            bookTitle.text = title
+            bookAuthor.text = author
+            bookPublished.text = firstYearPublished
+            bookSubject.text = subjects
 
             Picasso.get()
                 .load(imageUrl)
@@ -139,7 +143,7 @@ class SearchFragment : Fragment(), SearchContract.View {
             }
 
             buttonAddToList.setOnClickListener{
-                searchPresenter.addBook(book, requireContext())
+                searchPresenter.addBook(title, author, firstYearPublished, imageUrl, subjects, requireContext())
             }
         }
         mBottomSheetDialog.show()

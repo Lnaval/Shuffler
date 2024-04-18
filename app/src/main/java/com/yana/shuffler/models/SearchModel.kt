@@ -32,11 +32,18 @@ class SearchModel : SearchContract.Model {
         })
     }
 
-    override fun addBookToList(book: Book, context: Context, searchListener: OnFinishedSearchListener) {
+    override fun addBookToList(
+        title: String,
+        author: String,
+        firstYearPublished: String,
+        imageUrl: String,
+        subjects: String,
+        context: Context,
+        searchListener: OnFinishedSearchListener
+    ) {
         val bookDao = AddedBookDatabase.getInstance(context).bookDao()
         //add book to room database
-        val description = if(book.subject.size > 10) book.subject.take(10).joinToString { it } else book.subject.joinToString { it }
-        val bookToAdd = RoomBook(0, book.title, book.image, book.author.toString(), description)
+        val bookToAdd = RoomBook(0, title, imageUrl, author, subjects)
 
         if(bookDao.checkIfBookExists(bookToAdd.title)){
             searchListener.onBookAdded("Book Already Added")
@@ -61,5 +68,18 @@ class SearchModel : SearchContract.Model {
                 Log.e("TAG", "failed $t")
             }
         })
+    }
+
+    override fun viewBook(book: Book, searchListener: OnFinishedSearchListener) {
+        val author = if(book.author.isNullOrEmpty()) "Not Found" else book.author.toString()
+        val year = if(book.firstPublishYear==0) "Not Found" else book.firstPublishYear.toString()
+        val imageUrl = "https://covers.openlibrary.org/b/olid/${book.image}-M.jpg"
+        val subjects =
+            if(book.subject.isNullOrEmpty()){
+                "Not Found"
+            } else {
+                if(book.subject.size > 10) book.subject.take(10).toString() else book.subject.toString()
+            }
+        searchListener.onViewBook(book.title, author, year, imageUrl, subjects)
     }
 }
