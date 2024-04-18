@@ -16,6 +16,10 @@ class HomePresenter (
         mainView!!.displayRetrievedFiveBooks(books)
     }
 
+    override fun bookAlreadyReadRsult(message: String) {
+        mainView!!.displayAlreadyReadMessage(message)
+    }
+
     override fun requestBookDataByDateToday(context: Context, dateToday: String) {
         model.getBookDataByDate(context, dateToday, this)
     }

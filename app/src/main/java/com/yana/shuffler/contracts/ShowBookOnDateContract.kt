@@ -6,7 +6,7 @@ import com.yana.shuffler.models.room.RoomBook
 interface ShowBookOnDateContract {
     interface Model{
         interface OnFinishLoadBookOnDateDataListener{
-            fun loadedBookOnDateDate(data: RoomBook)
+            fun loadedBookOnDateDate(data: RoomBook, bookStatus: Boolean)
             fun updateBookStatusResult(result: Boolean)
         }
 
@@ -15,7 +15,7 @@ interface ShowBookOnDateContract {
     }
 
     interface View{
-        fun displayLoadedData(data: RoomBook)
+        fun displayLoadedData(data: RoomBook, bookStatus: Boolean)
         fun displayUpdatedBookStatus(result: Boolean)
     }
 

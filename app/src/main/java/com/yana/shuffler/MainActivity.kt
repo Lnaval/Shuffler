@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         if(savedInstanceState == null){
             replaceFragment(HomeFragment(), R.id.navHome)
         }
+        binding.bottomNav.itemIconTintList = null
         binding.bottomNav.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.navHome -> replaceFragment(HomeFragment(), R.id.navHome)
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     fun replaceFragment(fragment: Fragment, selectedItemId: Int) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
+            //.addToBackStack(null)
             .commit()
         binding.bottomNav.menu.findItem(selectedItemId).isChecked = true
     }

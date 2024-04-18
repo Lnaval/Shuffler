@@ -71,7 +71,7 @@ class CalendarFragment : Fragment(), CalendarContract.View {
             val calendar = Calendar.getInstance()
             var dayInMonth = calendar.getActualMaximum(Calendar.DATE)
 
-            val monthTextFormat = SimpleDateFormat("MMMM", Locale.getDefault())
+            val monthTextFormat = SimpleDateFormat("MMMM, yyyy", Locale.getDefault())
             binding.monthText.text = monthTextFormat.format(calendar.time)
 
             calendarPresenter.requestCalendarData(calendar.time, dayInMonth, requireContext())

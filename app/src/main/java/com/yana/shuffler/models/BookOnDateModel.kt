@@ -12,8 +12,9 @@ class BookOnDateModel : ShowBookOnDateContract.Model {
         bookOnDateListener: ShowBookOnDateContract.Model.OnFinishLoadBookOnDateDataListener
     ) {
         val data = AddedBookDatabase.getInstance(context).bookDao().getBook(id)
+        val bookStatus = AddedBookDatabase.getInstance(context).dateDao().getBookDateByBookId(data.id)
+        bookOnDateListener.loadedBookOnDateDate(data, bookStatus.isCompleted)
 
-        bookOnDateListener.loadedBookOnDateDate(data)
     }
 
     override fun updateBookStatus(
@@ -27,6 +28,6 @@ class BookOnDateModel : ShowBookOnDateContract.Model {
         AddedBookDatabase.getInstance(context).dateDao().updateBookStatus(updatedData)
 
         //check id update is successful
-        bookOnDateListener.updateBookStatusResult(true)
+        bookOnDateListener.updateBookStatusResult(updatedData.isCompleted)
     }
 }

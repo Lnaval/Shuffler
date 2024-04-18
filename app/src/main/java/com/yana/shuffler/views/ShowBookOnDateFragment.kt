@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.yana.shuffler.R
 import com.yana.shuffler.contracts.ShowBookOnDateContract
@@ -52,7 +51,7 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
         }
     }
 
-    override fun displayLoadedData(data: RoomBook) {
+    override fun displayLoadedData(data: RoomBook, bookStatus: Boolean) {
         val imageUrl = "https://covers.openlibrary.org/b/olid/${data.image}-L.jpg"
         Log.e("TAG", "DATA: $data")
 
@@ -65,6 +64,11 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
 
             bookTitle.text = data.title
             bookAuthor.text = data.author
+            subjectDescription.text = data.subjectDesc
+
+            if(bookStatus){
+                binding.checkMark.setBackgroundResource(R.drawable.checked_icon)
+            }
 
             binding.completedButton.setOnClickListener {
                 bookOnDatePresenter.requestUpdateBookStatus(requireContext(), data.id)
@@ -73,6 +77,10 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
     }
 
     override fun displayUpdatedBookStatus(result: Boolean) {
-        Toast.makeText(requireContext(), result.toString(), Toast.LENGTH_SHORT).show()
+        if(result){
+            binding.checkMark.setBackgroundResource(R.drawable.checked_icon)
+        } else {
+            binding.checkMark.setBackgroundResource(R.drawable.unchecked_icon)
+        }
     }
 }

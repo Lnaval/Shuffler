@@ -43,6 +43,7 @@ class CalendarAdapter(val onClickDate: ((id: Int) -> Unit)) : RecyclerView.Adapt
                 onClickDate.invoke(item.dateId)
             }
         } else {
+            holder.date.setTextColor(Color.BLACK)
             holder.date.setBackgroundColor(Color.WHITE)
         }
         holder.date.text = item.date

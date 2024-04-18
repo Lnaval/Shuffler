@@ -14,6 +14,8 @@ class HomeModel: HomeContract.Model {
 
         if(bookData!=null){
             homeListener.bookDataByDateResult(bookData)
+        } else {
+            homeListener.bookAlreadyReadRsult("You're currently on track with your reading list")
         }
     }
 

@@ -70,4 +70,9 @@ class HomeFragment : Fragment(), HomeContract.View {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
     }
+
+    override fun displayAlreadyReadMessage(message: String) {
+        binding.messageTextCard.visibility = View.VISIBLE
+        binding.messageText.text = message
+    }
 }

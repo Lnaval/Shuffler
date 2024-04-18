@@ -8,8 +8,8 @@ class BookOnDatePresenter(
     private var mainView: ShowBookOnDateContract.View?,
     private val model: ShowBookOnDateContract.Model
 ) : ShowBookOnDateContract.Presenter, ShowBookOnDateContract.Model.OnFinishLoadBookOnDateDataListener{
-    override fun loadedBookOnDateDate(data: RoomBook) {
-        mainView!!.displayLoadedData(data)
+    override fun loadedBookOnDateDate(data: RoomBook, bookStatus: Boolean) {
+        mainView!!.displayLoadedData(data, bookStatus)
     }
 
     override fun updateBookStatusResult(result: Boolean) {

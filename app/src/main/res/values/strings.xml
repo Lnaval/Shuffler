@@ -27,4 +27,13 @@
     <string name="finished_reading">Finished reading</string>
     <string name="see_all">See All</string>
     <string name="my_books">My Books</string>
+    <string name="calendar_subtitle">"You think your pain and your heartbreak are unprecedented in the history of the world, but then you read. It was books that taught me that the things that tormented me most were the very things that connected me with all the people who were alive, who had ever been alive."</string>
+    <string name="placeholder_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </string>
+    <string name="your_book_list_is_empty">Your book list is empty</string>
+    <string name="go_to_search">Go to search</string>
+    <string name="today">Today</string>
+    <string name="discover">Discover</string>
+    <string name="bookshelf">Bookshelf</string>
+    <string name="populate_your_book_list">Populate your book list</string>
+    <string name="image_description">Image description</string>
 </resources>

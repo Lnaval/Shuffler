@@ -25,7 +25,7 @@ interface BookDao {
 
     @Query("SELECT * FROM book_table " +
             "INNER JOIN date_table ON book_table.id = date_table.book " +
-            "WHERE date_table.date <= :date")
+            "WHERE date_table.date <= :date AND date_table.is_completed LIKE 0")
     fun getTodayBook(date: String): RoomBook
 
     @Query("SELECT EXISTS(SELECT * FROM book_table WHERE name LIKE :bookName)")
