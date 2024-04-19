@@ -10,7 +10,7 @@ import com.yana.shuffler.R
 import com.yana.shuffler.databinding.LayoutUserAddedBooksBinding
 import com.yana.shuffler.models.room.RoomBook
 
-class AddedBooksAdapter : RecyclerView.Adapter<AddedBooksAdapter.AddedViewHolder>() {
+class AddedBooksAdapter(private val onLongClickDeleteItem: ((Int) -> Unit)) : RecyclerView.Adapter<AddedBooksAdapter.AddedViewHolder>() {
     private val diffCallback = object : DiffUtil.ItemCallback<RoomBook>(){
         override fun areItemsTheSame(oldItem: RoomBook, newItem: RoomBook): Boolean {
             return oldItem.id == newItem.id
@@ -47,18 +47,16 @@ class AddedBooksAdapter : RecyclerView.Adapter<AddedBooksAdapter.AddedViewHolder
         holder.title.text = item.title
         holder.author.text = item.author
         val imageUrl = "https://covers.openlibrary.org/b/olid/${item.image}-M.jpg"
-//        Picasso.get()
-//            .load(imageUrl)
-//            .resize(100, 150)
-//            .centerCrop()
-//            .placeholder(R.drawable.ic_launcher_foreground)
-//            .error(R.drawable.ic_launcher_foreground)
-//            .into(holder.image)
 
         Glide.with(holder.image)
             .load(imageUrl)
             .centerCrop()
             .thumbnail(Glide.with(holder.image).load(R.drawable.image_loading))
             .into(holder.image)
+
+        holder.image.setOnLongClickListener {
+            onLongClickDeleteItem.invoke(item.id)
+            return@setOnLongClickListener true
+        }
     }
 }

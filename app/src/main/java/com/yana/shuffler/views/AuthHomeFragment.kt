@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.yana.shuffler.AuthActivity
-import com.yana.shuffler.MainActivity
-import com.yana.shuffler.R
 import com.yana.shuffler.databinding.FragmentAuthHomeBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -34,4 +34,14 @@ class BookOnDateModel : ShowBookOnDateContract.Model {
             bookOnDateListener.completedAllBooks("You have completed all books in your bookshelf")
         }
     }
+
+    override fun deleteBookShelf(
+        context: Context,
+        bookOnDateListener: ShowBookOnDateContract.Model.OnFinishLoadBookOnDateDataListener
+    ) {
+        AddedBookDatabase.getInstance(context).dateDao().deleteAllDates()
+        AddedBookDatabase.getInstance(context).bookDao().deleteAllBooks()
+
+        bookOnDateListener.deleteBookShelf("Deleted Successfully")
+    }
 }

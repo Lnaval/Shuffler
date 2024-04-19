@@ -20,11 +20,19 @@ class BookOnDatePresenter(
         mainView!!.displayFinishedShelf(message)
     }
 
+    override fun deleteBookShelf(result: String) {
+        mainView!!.displayDeleteShelfResult(result)
+    }
+
     override fun requestBookOnDateData(context: Context, id: Int) {
         model.loadBookOnDateData(context, id, this)
     }
 
     override fun requestUpdateBookStatus(context: Context, dateId: Int) {
         model.updateBookStatus(context, dateId, this)
+    }
+
+    override fun requestDeleteShelf(context: Context) {
+        model.deleteBookShelf(context, this)
     }
 }

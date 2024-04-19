@@ -103,11 +103,15 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
             show()
         }
         cSDialogCompletedBinding.confirm.setOnClickListener{
-            //delete
+            bookOnDatePresenter.requestDeleteShelf(requireContext())
         }
 
         cSDialogCompletedBinding.cancel.setOnClickListener{
             completedDialog.cancel()
         }
+    }
+
+    override fun displayDeleteShelfResult(result: String) {
+        Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show()
     }
 }
