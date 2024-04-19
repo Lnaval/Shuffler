@@ -34,7 +34,7 @@ class AuthHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch {
-            delay(1500L)
+            delay(1000L)
             (activity as AuthActivity).replaceFragment(LoginFragment())
         }
     }

@@ -38,4 +38,9 @@
     <string name="year_published">Year Published: </string>
     <string name="subject">Subject:</string>
     <string name="add_to_list">Add to List</string>
+    <string name="completed_bookshelf">You completed your bookshelf. Do you want to delete your existing progress and shuffle again?</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="delete_shelf">Delete Shelf</string>
 </resources>

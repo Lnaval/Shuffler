@@ -1,7 +1,6 @@
 package com.yana.shuffler.contracts
 
 import android.content.Context
-import android.os.Message
 import com.yana.shuffler.models.room.RoomBook
 
 interface ShowBookOnDateContract {

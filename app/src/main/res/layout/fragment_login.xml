@@ -20,7 +20,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="30dp"
         android:fontFamily="@font/montserrat_bold"
-        android:text="Login"
+        android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
             android:layout_height="match_parent">
             <TextView
                 android:id="@+id/emailText"
-                android:text="Email"
+                android:text="@string/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
@@ -69,11 +69,11 @@
                     android:fontFamily="@font/montserrat_regular"
                     android:background="@drawable/search_background"
                     android:importantForAutofill="no"
-                    android:inputType="none"/>
+                    android:inputType="textEmailAddress"/>
             </com.google.android.material.textfield.TextInputLayout>
             <TextView
                 android:id="@+id/passText"
-                android:text="Password"
+                android:text="@string/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

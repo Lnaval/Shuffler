@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide
 import com.yana.shuffler.R
 import com.yana.shuffler.contracts.ShowBookOnDateContract
 import com.yana.shuffler.databinding.DialogCompletedBinding
-import com.yana.shuffler.databinding.DialogEmptyBookListBinding
 import com.yana.shuffler.databinding.FragmentShowBookOnDateBinding
 import com.yana.shuffler.models.BookOnDateModel
 import com.yana.shuffler.models.room.RoomBook

@@ -1,7 +1,6 @@
 package com.yana.shuffler.models.room
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -11,8 +10,8 @@ interface BookDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun addBook(book: RoomBook)
 
-    @Query("DELETE FROM book_table WHERE name LIKE :title")
-    fun deleteBook(title: String)
+    @Query("DELETE FROM book_table WHERE id LIKE :id")
+    fun deleteBook(id: Int)
 
     @Query("SELECT * FROM book_table")
     fun getAllBookInList(): List<RoomBook>

@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:padding="10dp"
-            android:text="You completed your bookshelf. Do you want to delete your existing progress and shuffle again?"
+            android:text="@string/completed_bookshelf"
             android:gravity="center"
             android:fontFamily="@font/opensans_regular"
             android:layout_width="match_parent"
