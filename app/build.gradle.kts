@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
 
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 
 }
 
@@ -59,6 +60,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.androidx.navigation.fragment)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
