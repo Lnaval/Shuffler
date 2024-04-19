@@ -25,9 +25,13 @@ class BookOnDateModel : ShowBookOnDateContract.Model {
         val toUpdate = AddedBookDatabase.getInstance(context).dateDao().getBookDateByBookId(dateId)
         val updatedData = RoomDate(toUpdate.dateId, toUpdate.date, toUpdate.book, !toUpdate.isCompleted)
 
-        AddedBookDatabase.getInstance(context).dateDao().updateBookStatus(updatedData)
-
-        //check id update is successful
+        val dateDao = AddedBookDatabase.getInstance(context).dateDao()
+        dateDao.updateBookStatus(updatedData)
+        val checkBookshelf = dateDao.getBookStatus(false)
         bookOnDateListener.updateBookStatusResult(updatedData.isCompleted)
+
+        if(!checkBookshelf){
+            bookOnDateListener.completedAllBooks("You have completed all books in your bookshelf")
+        }
     }
 }

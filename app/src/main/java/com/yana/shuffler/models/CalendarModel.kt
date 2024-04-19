@@ -2,7 +2,6 @@ package com.yana.shuffler.models
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.contracts.CalendarContract.Model.OnFinishCalendarListener
@@ -112,7 +111,7 @@ class CalendarModel: CalendarContract.Model {
                 list.add(RoomDate(0, i.toString(), -1,false))
             }
         }
-        Log.e("counting", "$list")
+        //Log.e("counting", "$list")
         return list
     }
 }

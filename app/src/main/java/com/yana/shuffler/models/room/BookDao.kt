@@ -11,8 +11,8 @@ interface BookDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun addBook(book: RoomBook)
 
-    @Delete
-    fun deleteBook(book: RoomBook)
+    @Query("DELETE FROM book_table WHERE name LIKE :title")
+    fun deleteBook(title: String)
 
     @Query("SELECT * FROM book_table")
     fun getAllBookInList(): List<RoomBook>
@@ -33,4 +33,7 @@ interface BookDao {
 
     @Query("SELECT EXISTS(SELECT * FROM book_table)")
     fun checkIfTableExists(): Boolean
+
+    @Query("DELETE FROM book_table")
+    fun deleteAllBooks()
 }

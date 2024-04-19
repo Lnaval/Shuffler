@@ -1,6 +1,7 @@
 package com.yana.shuffler.models
 
 import android.content.Context
+import com.yana.shuffler.BookQueryResult
 import com.yana.shuffler.contracts.HomeContract
 import com.yana.shuffler.models.room.AddedBookDatabase
 
@@ -10,17 +11,25 @@ class HomeModel: HomeContract.Model {
         dateToday: String,
         homeListener: HomeContract.Model.HomeListener
     ) {
+        val checkBookStatus = AddedBookDatabase.getInstance(context).dateDao().getBookStatus(false)
+        val checkBookDateTable = AddedBookDatabase.getInstance(context).dateDao().checkIfTableExists()
         val tableExist = AddedBookDatabase.getInstance(context).bookDao().checkIfTableExists()
         val bookData = AddedBookDatabase.getInstance(context).bookDao().getTodayBook(dateToday)
 
+
+
         if(tableExist){
-            if(bookData!=null){
-                homeListener.bookDataByDateResult(bookData)
+            if(!checkBookStatus && checkBookDateTable){
+                homeListener.bookAlreadyReadRsult(BookQueryResult.Completed)
             } else {
-                homeListener.bookAlreadyReadRsult("You're currently on track with your reading list")
+                if(bookData!=null){
+                    homeListener.bookDataByDateResult(bookData)
+                } else {
+                    homeListener.bookAlreadyReadRsult(BookQueryResult.OnTrack)
+                }
             }
         } else {
-            homeListener.bookAlreadyReadRsult("You currently don't have anything in your shelf")
+            homeListener.bookAlreadyReadRsult(BookQueryResult.Empty)
         }
     }
 

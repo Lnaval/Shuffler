@@ -32,6 +32,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     private lateinit var searchedBooks: SearchedBooksAdapter
     private lateinit var searchKey: String
     private lateinit var mBottomSheetDialog: BottomSheetDialog
+    private lateinit var mBottomSheetBinding: DialogBottomSheetBookDetailsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,19 +101,6 @@ class SearchFragment : Fragment(), SearchContract.View {
         binding.progressIndicator.isVisible = false
     }
 
-    override fun showNoInternetDialog() {
-        val mNoInternetDialog = Dialog(requireContext())
-        val mNoInternetDialogBinding = DialogNoInternetBinding.inflate(layoutInflater, null, false)
-
-        mNoInternetDialog.apply {
-            requestWindowFeature(Window.FEATURE_NO_TITLE)
-            //setCancelable(false)
-            setContentView(mNoInternetDialogBinding.root)
-            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            show()
-        }
-    }
-
     override fun setUpDialogBottomSheetBookDetails(
         title: String,
         author: String,
@@ -121,7 +109,7 @@ class SearchFragment : Fragment(), SearchContract.View {
         subjects: String
     ) {
         mBottomSheetDialog = BottomSheetDialog(requireContext())
-        val mBottomSheetBinding = DialogBottomSheetBookDetailsBinding.inflate(layoutInflater, null, false)
+        mBottomSheetBinding = DialogBottomSheetBookDetailsBinding.inflate(layoutInflater, null, false)
 
         mBottomSheetDialog.setContentView(mBottomSheetBinding.root)
         mBottomSheetBinding.apply {
@@ -137,9 +125,7 @@ class SearchFragment : Fragment(), SearchContract.View {
                 .thumbnail(Glide.with(bookImage).load(R.drawable.image_loading))
                 .into(bookImage)
 
-            if(doesShuffledBookListExists()){
-                buttonAddToList.visibility = View.INVISIBLE
-            }
+            searchPresenter.checkShuffledList(requireContext())
 
             buttonAddToList.setOnClickListener{
                 searchPresenter.addBook(title, author, firstYearPublished, image, subjects, requireContext())
@@ -148,7 +134,7 @@ class SearchFragment : Fragment(), SearchContract.View {
         mBottomSheetDialog.show()
     }
 
-    private fun doesShuffledBookListExists(): Boolean {
-        return AddedBookDatabase.getInstance(requireContext()).dateDao().checkIfTableExists()
+    override fun displayWhenShuffledListExists() {
+        mBottomSheetBinding.buttonAddToList.visibility = View.INVISIBLE
     }
 }

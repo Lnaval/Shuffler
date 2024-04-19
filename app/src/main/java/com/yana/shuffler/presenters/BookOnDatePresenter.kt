@@ -16,6 +16,10 @@ class BookOnDatePresenter(
         mainView!!.displayUpdatedBookStatus(result)
     }
 
+    override fun completedAllBooks(message: String) {
+        mainView!!.displayFinishedShelf(message)
+    }
+
     override fun requestBookOnDateData(context: Context, id: Int) {
         model.loadBookOnDateData(context, id, this)
     }

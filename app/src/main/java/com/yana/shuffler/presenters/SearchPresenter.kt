@@ -31,6 +31,10 @@ class SearchPresenter(
         model.viewBook(book, this)
     }
 
+    override fun checkShuffledList(context: Context) {
+        model.doesShuffledListExist(context, this)
+    }
+
     override fun onFinishSearch(books: ArrayList<Book>) {
         mainView!!.setUpSearchedItemsList(books)
     }
@@ -51,5 +55,9 @@ class SearchPresenter(
         subjects: String
     ) {
         mainView!!.setUpDialogBottomSheetBookDetails(title, author, firstYearPublished, image, subjects)
+    }
+
+    override fun shuffledListExists() {
+        mainView!!.displayWhenShuffledListExists()
     }
 }

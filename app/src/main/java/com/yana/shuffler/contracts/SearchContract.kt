@@ -16,6 +16,8 @@ interface SearchContract {
                 image: String?,
                 subjects: String
             )
+
+            fun shuffledListExists()
         }
         fun getBooks(
             searchKey: String,
@@ -35,6 +37,8 @@ interface SearchContract {
         fun viewBook(
             book: Book,
             searchListener: OnFinishedSearchListener)
+
+        fun doesShuffledListExist(context: Context, searchListener: OnFinishedSearchListener)
     }
 
     interface Presenter{
@@ -48,6 +52,7 @@ interface SearchContract {
             context: Context)
         fun searchMore(searchKey: String, pageNumber: Int)
         fun viewBook(book: Book)
+        fun checkShuffledList(context: Context)
     }
 
     interface View{
@@ -61,6 +66,6 @@ interface SearchContract {
             image: String?,
             subjects: String
         )
-        fun showNoInternetDialog()
+        fun displayWhenShuffledListExists()
     }
 }

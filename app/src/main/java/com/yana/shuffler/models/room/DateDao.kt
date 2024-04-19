@@ -36,4 +36,10 @@ interface DateDao {
 
     @Query("SELECT EXISTS(SELECT * FROM date_table)")
     fun checkIfTableExists() : Boolean
+
+    @Query("SELECT EXISTS(SELECT * FROM date_table WHERE is_completed LIKE :status)")
+    fun getBookStatus(status: Boolean): Boolean
+
+    @Query("DELETE FROM date_table")
+    fun deleteAllDates()
 }

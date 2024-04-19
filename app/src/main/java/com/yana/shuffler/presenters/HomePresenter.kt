@@ -1,6 +1,7 @@
 package com.yana.shuffler.presenters
 
 import android.content.Context
+import com.yana.shuffler.BookQueryResult
 import com.yana.shuffler.contracts.HomeContract
 import com.yana.shuffler.models.room.RoomBook
 
@@ -16,8 +17,8 @@ class HomePresenter (
         mainView!!.displayRetrievedFiveBooks(books)
     }
 
-    override fun bookAlreadyReadRsult(message: String) {
-        mainView!!.displayAlreadyReadMessage(message)
+    override fun bookAlreadyReadRsult(result: BookQueryResult) {
+        mainView!!.displayAlreadyReadMessage(result)
     }
 
     override fun requestBookDataByDateToday(context: Context, dateToday: String) {

@@ -1,6 +1,7 @@
 package com.yana.shuffler.contracts
 
 import android.content.Context
+import android.os.Message
 import com.yana.shuffler.models.room.RoomBook
 
 interface ShowBookOnDateContract {
@@ -8,6 +9,7 @@ interface ShowBookOnDateContract {
         interface OnFinishLoadBookOnDateDataListener{
             fun loadedBookOnDateDate(data: RoomBook, bookStatus: Boolean)
             fun updateBookStatusResult(result: Boolean)
+            fun completedAllBooks(message: String)
         }
 
         fun loadBookOnDateData(context: Context, id: Int, bookOnDateListener: OnFinishLoadBookOnDateDataListener)
@@ -17,6 +19,7 @@ interface ShowBookOnDateContract {
     interface View{
         fun displayLoadedData(data: RoomBook, bookStatus: Boolean)
         fun displayUpdatedBookStatus(result: Boolean)
+        fun displayFinishedShelf(message: String)
     }
 
     interface Presenter{

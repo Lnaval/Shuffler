@@ -82,4 +82,12 @@ class SearchModel : SearchContract.Model {
             }
         searchListener.onViewBook(book.title, author, year, book.image, subjects)
     }
+
+    override fun doesShuffledListExist(context: Context, searchListener: OnFinishedSearchListener) {
+        val check = AddedBookDatabase.getInstance(context).dateDao().checkIfTableExists()
+
+        if(check){
+            searchListener.shuffledListExists()
+        }
+    }
 }
