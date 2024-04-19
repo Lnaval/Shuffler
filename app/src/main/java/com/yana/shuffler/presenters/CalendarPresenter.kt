@@ -41,7 +41,7 @@ class CalendarPresenter(
         model.checkIfBookCanBeOpened(dateToday, bookDateId, context, this)
     }
 
-    override fun shuffleList(daysAfter: Int, context: Context) {
+    override fun shuffleList(daysAfter: String, context: Context) {
         model.shuffleRetrievedData(daysAfter, context, this)
     }
 

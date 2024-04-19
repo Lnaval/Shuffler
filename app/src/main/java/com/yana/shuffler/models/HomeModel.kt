@@ -10,12 +10,17 @@ class HomeModel: HomeContract.Model {
         dateToday: String,
         homeListener: HomeContract.Model.HomeListener
     ) {
+        val tableExist = AddedBookDatabase.getInstance(context).bookDao().checkIfTableExists()
         val bookData = AddedBookDatabase.getInstance(context).bookDao().getTodayBook(dateToday)
 
-        if(bookData!=null){
-            homeListener.bookDataByDateResult(bookData)
+        if(tableExist){
+            if(bookData!=null){
+                homeListener.bookDataByDateResult(bookData)
+            } else {
+                homeListener.bookAlreadyReadRsult("You're currently on track with your reading list")
+            }
         } else {
-            homeListener.bookAlreadyReadRsult("You're currently on track with your reading list")
+            homeListener.bookAlreadyReadRsult("You currently don't have anything in your shelf")
         }
     }
 

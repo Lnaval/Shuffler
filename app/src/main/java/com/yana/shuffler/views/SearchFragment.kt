@@ -13,8 +13,8 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.squareup.picasso.Picasso
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.yana.shuffler.R
 import com.yana.shuffler.contracts.SearchContract
 import com.yana.shuffler.databinding.DialogBottomSheetBookDetailsBinding
@@ -117,7 +117,7 @@ class SearchFragment : Fragment(), SearchContract.View {
         title: String,
         author: String,
         firstYearPublished: String,
-        imageUrl: String,
+        image: String?,
         subjects: String
     ) {
         mBottomSheetDialog = BottomSheetDialog(requireContext())
@@ -130,12 +130,11 @@ class SearchFragment : Fragment(), SearchContract.View {
             bookPublished.text = firstYearPublished
             bookSubject.text = subjects
 
-            Picasso.get()
-                .load(imageUrl)
-                .resize(150, 200)
+            val url = "https://covers.openlibrary.org/b/olid/${image}-M.jpg"
+            Glide.with(bookImage)
+                .load(url)
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher_foreground)
-                .error(R.drawable.ic_launcher_foreground)
+                .thumbnail(Glide.with(bookImage).load(R.drawable.image_loading))
                 .into(bookImage)
 
             if(doesShuffledBookListExists()){
@@ -143,7 +142,7 @@ class SearchFragment : Fragment(), SearchContract.View {
             }
 
             buttonAddToList.setOnClickListener{
-                searchPresenter.addBook(title, author, firstYearPublished, imageUrl, subjects, requireContext())
+                searchPresenter.addBook(title, author, firstYearPublished, image, subjects, requireContext())
             }
         }
         mBottomSheetDialog.show()

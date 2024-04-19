@@ -16,11 +16,11 @@ class SearchPresenter(
         title: String,
         author: String,
         firstYearPublished: String,
-        imageUrl: String,
+        image: String?,
         subjects: String,
         context: Context
     ) {
-        model.addBookToList(title, author, firstYearPublished, imageUrl, subjects, context, this)
+        model.addBookToList(title, author, firstYearPublished, image, subjects, context, this)
     }
 
     override fun searchMore(searchKey: String, pageNumber: Int) {
@@ -47,9 +47,9 @@ class SearchPresenter(
         title: String,
         author: String,
         firstYearPublished: String,
-        imageUrl: String,
+        image: String?,
         subjects: String
     ) {
-        mainView!!.setUpDialogBottomSheetBookDetails(title, author, firstYearPublished, imageUrl, subjects)
+        mainView!!.setUpDialogBottomSheetBookDetails(title, author, firstYearPublished, image, subjects)
     }
 }

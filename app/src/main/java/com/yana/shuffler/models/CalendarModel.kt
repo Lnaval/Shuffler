@@ -45,13 +45,18 @@ class CalendarModel: CalendarContract.Model {
     }
 
     //add listener function?
-    override fun shuffleRetrievedData(daysAfter: Int, context: Context, calendarListener: OnFinishCalendarListener) {
+    override fun shuffleRetrievedData(daysAfter: String, context: Context, calendarListener: OnFinishCalendarListener) {
         val currentBookList = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList()
-        if (daysAfter != 0) {
-            val shuffleList = currentBookList.shuffled()
-            assignBookToDate(daysAfter, shuffleList, context)
+        if(daysAfter.isNotEmpty()){
+            if (daysAfter.toInt() != 0) {
+                val shuffleList = currentBookList.shuffled()
+                assignBookToDate(daysAfter.toInt(), shuffleList, context)
+            } else {
+                calendarListener.errorMessage("Invalid input")
+            }
         } else {
             calendarListener.errorMessage("Invalid input")
+
         }
     }
 

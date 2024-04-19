@@ -5,9 +5,8 @@
     <string name="open_nav">Open</string>
     <string name="close_nav">Close</string>
     <string name="search">Search</string>
-    <string name="book_list">Book List</string>
     <string name="greeting_string">Hello, [NAME]</string>
-    <string name="calendar">Advent Calendar</string>
+    <string name="calendar">Calendar</string>
     <string name="shuffle_content">Do you want to shuffle your books?</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
@@ -36,7 +35,7 @@
     <string name="bookshelf">Bookshelf</string>
     <string name="populate_your_book_list">Populate your book list</string>
     <string name="image_description">Image description</string>
-    <string name="year_published">Year Published:</string>
+    <string name="year_published">Year Published: </string>
     <string name="subject">Subject:</string>
     <string name="add_to_list">Add to List</string>
 </resources>

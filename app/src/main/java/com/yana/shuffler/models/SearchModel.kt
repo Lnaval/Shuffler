@@ -36,14 +36,14 @@ class SearchModel : SearchContract.Model {
         title: String,
         author: String,
         firstYearPublished: String,
-        imageUrl: String,
+        image: String?,
         subjects: String,
         context: Context,
         searchListener: OnFinishedSearchListener
     ) {
         val bookDao = AddedBookDatabase.getInstance(context).bookDao()
         //add book to room database
-        val bookToAdd = RoomBook(0, title, imageUrl, author, subjects)
+        val bookToAdd = RoomBook(0, title, image, author, subjects)
 
         if(bookDao.checkIfBookExists(bookToAdd.title)){
             searchListener.onBookAdded("Book Already Added")
@@ -73,13 +73,13 @@ class SearchModel : SearchContract.Model {
     override fun viewBook(book: Book, searchListener: OnFinishedSearchListener) {
         val author = if(book.author.isNullOrEmpty()) "Not Found" else book.author.toString()
         val year = if(book.firstPublishYear==0) "Not Found" else book.firstPublishYear.toString()
-        val imageUrl = "https://covers.openlibrary.org/b/olid/${book.image}-M.jpg"
+
         val subjects =
             if(book.subject.isNullOrEmpty()){
                 "Not Found"
             } else {
                 if(book.subject.size > 10) book.subject.take(10).toString() else book.subject.toString()
             }
-        searchListener.onViewBook(book.title, author, year, imageUrl, subjects)
+        searchListener.onViewBook(book.title, author, year, book.image, subjects)
     }
 }

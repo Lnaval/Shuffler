@@ -13,7 +13,7 @@ interface SearchContract {
                 title: String,
                 author: String,
                 firstYearPublished: String,
-                imageUrl: String,
+                image: String?,
                 subjects: String
             )
         }
@@ -25,7 +25,7 @@ interface SearchContract {
             title: String,
             author: String,
             firstYearPublished: String,
-            imageUrl: String,
+            image: String?,
             subjects: String,
             context: Context,
             searchListener: OnFinishedSearchListener)
@@ -43,7 +43,7 @@ interface SearchContract {
             title: String,
             author: String,
             firstYearPublished: String,
-            imageUrl: String,
+            image: String?,
             subjects: String,
             context: Context)
         fun searchMore(searchKey: String, pageNumber: Int)
@@ -58,7 +58,7 @@ interface SearchContract {
             title: String,
             author: String,
             firstYearPublished: String,
-            imageUrl: String,
+            image: String?,
             subjects: String
         )
         fun showNoInternetDialog()

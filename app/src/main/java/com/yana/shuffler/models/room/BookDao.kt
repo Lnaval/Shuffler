@@ -30,4 +30,7 @@ interface BookDao {
 
     @Query("SELECT EXISTS(SELECT * FROM book_table WHERE name LIKE :bookName)")
     fun checkIfBookExists(bookName: String) : Boolean
+
+    @Query("SELECT EXISTS(SELECT * FROM book_table)")
+    fun checkIfTableExists(): Boolean
 }

@@ -56,15 +56,21 @@ class CalendarFragment : Fragment(), CalendarContract.View {
                 requestWindowFeature(Window.FEATURE_NO_TITLE)
                 setCancelable(false)
                 setContentView(sBDialogBinding.root)
+                window?.setLayout(950, 750)
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 show()
             }
 
             sBDialogBinding.confirm.setOnClickListener {
-                val daysAfter = sBDialogBinding.daysAfterInput.text.toString().toInt()
+                val daysAfter = sBDialogBinding.daysAfterInput.text.toString()
                 calendarPresenter.shuffleList(daysAfter, requireContext())
                 shuffleBooksDialog.cancel()
                 calendarPresenter.requestDateTableData(requireContext())
+            }
+
+            sBDialogBinding.cancel.setOnClickListener {
+                (activity as MainActivity).replaceFragment(HomeFragment(), R.id.navHome)
+                shuffleBooksDialog.cancel()
             }
         } else {
             //display calendar
@@ -123,6 +129,7 @@ class CalendarFragment : Fragment(), CalendarContract.View {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setCancelable(false)
             setContentView(cSDialogShuffleBinding.root)
+            window?.setLayout(800, 500)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             show()
         }
