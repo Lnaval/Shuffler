@@ -4,10 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.databinding.ActivityAuthBinding
 
-private const val SP_STRING = "sharedPrefs"
-private const val AUTH_KEY = "name"
 class AuthActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAuthBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,9 +19,8 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun checkIfLoggedIn() {
-        val sharedPreferences = getSharedPreferences(SP_STRING, MODE_PRIVATE)
-        val check = sharedPreferences.getString(AUTH_KEY, "")
-        if(check!="false"){
+        val user = Firebase.auth.currentUser
+        if(user!=null){
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()

@@ -2,13 +2,16 @@ package com.yana.shuffler.views
 
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.AuthActivity
@@ -30,6 +33,7 @@ private const val AUTH_KEY = "name"
 class HomeFragment : Fragment(), HomeContract.View {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var currentUser: FirebaseUser
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +42,7 @@ class HomeFragment : Fragment(), HomeContract.View {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -46,9 +51,8 @@ class HomeFragment : Fragment(), HomeContract.View {
         homePresenter.requestBookDataByDateToday(requireContext(), dateToday)
         homePresenter.requestFiveBooks(requireContext())
 
-        val userEmail = requireContext().getSharedPreferences(SP_STRING, MODE_PRIVATE)
-            .getString(AUTH_KEY, "")
-        binding.subtitle.append(userEmail)
+        currentUser = Firebase.auth.currentUser!!
+        binding.subtitle.append(currentUser.email)
 
         binding.userBooksSeeAll.setOnClickListener {
             (activity as MainActivity).replaceFragment(AddedBooksFragment(), R.id.navBookList)
@@ -103,8 +107,8 @@ class HomeFragment : Fragment(), HomeContract.View {
         if(message == BookQueryResult.Completed){
             binding.deleteBookshelf.visibility = View.VISIBLE
             binding.deleteBookshelf.setOnClickListener{
-                AddedBookDatabase.getInstance(requireContext()).bookDao().deleteAllBooks()
-                AddedBookDatabase.getInstance(requireContext()).dateDao().deleteAllDates()
+                AddedBookDatabase.getInstance(requireContext()).bookDao().deleteAllBooks(currentUser.uid)
+                AddedBookDatabase.getInstance(requireContext()).dateDao().deleteAllDates(currentUser.uid)
                 (activity as MainActivity).replaceFragment(this@HomeFragment, R.id.navHome)
             }
         }

@@ -3,6 +3,8 @@ package com.yana.shuffler
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.databinding.ActivityMainBinding
 import com.yana.shuffler.views.AddedBooksFragment
 import com.yana.shuffler.views.CalendarFragment
@@ -11,6 +13,7 @@ import com.yana.shuffler.views.SearchFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,5 +40,9 @@ class MainActivity : AppCompatActivity() {
             //.addToBackStack(null)
             .commit()
         binding.bottomNav.menu.findItem(selectedItemId).isChecked = true
+    }
+
+    fun getCurrentUserUid(): String{
+        return Firebase.auth.currentUser!!.uid
     }
 }

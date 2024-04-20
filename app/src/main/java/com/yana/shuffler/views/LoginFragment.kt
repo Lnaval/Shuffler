@@ -64,12 +64,10 @@ class LoginFragment : Fragment() {
         mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     val user = mAuth.currentUser
-
                     val sharedPreferences = requireContext().getSharedPreferences(SP_STRING, MODE_PRIVATE)
                     val editor = sharedPreferences.edit()
-                    editor.putString(AUTH_KEY, user?.email)
+                    editor.putString(AUTH_KEY, user?.uid)
                     editor.apply()
 
                     val intent = Intent(this@LoginFragment.context, MainActivity::class.java)

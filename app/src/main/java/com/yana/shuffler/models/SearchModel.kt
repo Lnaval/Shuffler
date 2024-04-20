@@ -2,6 +2,8 @@ package com.yana.shuffler.models
 
 import android.content.Context
 import android.util.Log
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.contracts.SearchContract
 import com.yana.shuffler.contracts.SearchContract.Model.OnFinishedSearchListener
 import com.yana.shuffler.models.room.AddedBookDatabase
@@ -14,6 +16,7 @@ import retrofit2.Response
 
 class SearchModel : SearchContract.Model {
     private val apiService = RetrofitInstance.build().create(OpenLibraryInterface::class.java)
+    private val uid = Firebase.auth.currentUser!!.uid
 
     override fun getBooks(searchKey: String, pageNumber: Int, searchListener: OnFinishedSearchListener
     ) {
@@ -43,9 +46,9 @@ class SearchModel : SearchContract.Model {
     ) {
         val bookDao = AddedBookDatabase.getInstance(context).bookDao()
         //add book to room database
-        val bookToAdd = RoomBook(0, title, image, author, subjects)
+        val bookToAdd = RoomBook(0, title, image, author, subjects, uid)
 
-        if(bookDao.checkIfBookExists(bookToAdd.title)){
+        if(bookDao.checkIfBookExists(bookToAdd.title, uid)){
             searchListener.onBookAdded("Book Already Added")
         } else {
             AddedBookDatabase.getInstance(context).bookDao().addBook(bookToAdd)
@@ -84,7 +87,7 @@ class SearchModel : SearchContract.Model {
     }
 
     override fun doesShuffledListExist(context: Context, searchListener: OnFinishedSearchListener) {
-        val check = AddedBookDatabase.getInstance(context).dateDao().checkIfTableExists()
+        val check = AddedBookDatabase.getInstance(context).dateDao().checkIfTableExists(uid)
 
         if(check){
             searchListener.shuffledListExists()

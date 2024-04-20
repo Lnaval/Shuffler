@@ -11,5 +11,6 @@ data class RoomDate(
     val dateId: Int,
     @ColumnInfo(name = "date") val date: String,
     @ColumnInfo(name = "book") val book: Int,
-    @ColumnInfo(name = "is_completed") val isCompleted: Boolean
+    @ColumnInfo(name = "is_completed") val isCompleted: Boolean,
+    @ColumnInfo(name = "uid") val uid: String
 )

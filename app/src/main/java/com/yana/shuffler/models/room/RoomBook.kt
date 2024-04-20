@@ -10,5 +10,6 @@ data class RoomBook (
     @ColumnInfo(name = "name") val title: String,
     @ColumnInfo(name = "image") val image: String?,
     @ColumnInfo(name = "author") val author: String?,
-    @ColumnInfo(name = "subject_desc") val subjectDesc: String?
+    @ColumnInfo(name = "subject_desc") val subjectDesc: String?,
+    @ColumnInfo(name = "uid") val uid: String
 )

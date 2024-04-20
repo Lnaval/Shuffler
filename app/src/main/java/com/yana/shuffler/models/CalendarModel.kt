@@ -3,6 +3,8 @@ package com.yana.shuffler.models
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.contracts.CalendarContract.Model.OnFinishCalendarListener
 import com.yana.shuffler.models.room.AddedBookDatabase
@@ -15,6 +17,7 @@ import java.util.Date
 import java.util.Locale
 
 class CalendarModel: CalendarContract.Model {
+    private val uid = Firebase.auth.currentUser!!.uid
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getCalendarData(date: Date, dayInMonth: Int, context: Context, calendarListener: OnFinishCalendarListener) {
         val monthNumberFormat = SimpleDateFormat("MM-yyyy", Locale.getDefault())
@@ -22,7 +25,7 @@ class CalendarModel: CalendarContract.Model {
         val month = monthNumberFormat.format(date).substring(0,2)
         val dayOfMonthStartAt = LocalDate.of(year.toInt(), month.toInt(), 1).dayOfWeek.value
 
-        val dateTableList = AddedBookDatabase.getInstance(context).dateDao().getAll()
+        val dateTableList = AddedBookDatabase.getInstance(context).dateDao().getAll(uid)
 
         val dateListTableForEachMonth = dateTableList.filter { listItem ->
             val checkDate = listItem.date.substring(0,3)+listItem.date.substring(6,10)
@@ -34,18 +37,18 @@ class CalendarModel: CalendarContract.Model {
     }
 
     override fun getDateTableData(context: Context, calendarListener: OnFinishCalendarListener) {
-        val check = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList()
+        val check = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList(uid)
         if(check.isEmpty()){
             calendarListener.checkBookListSize()
         } else {
-            val result = AddedBookDatabase.getInstance(context).dateDao().getAll()
+            val result = AddedBookDatabase.getInstance(context).dateDao().getAll(uid)
             calendarListener.finishedGettingDateTableData(result.isNotEmpty())
         }
     }
 
     //add listener function?
     override fun shuffleRetrievedData(daysAfter: String, context: Context, calendarListener: OnFinishCalendarListener) {
-        val currentBookList = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList()
+        val currentBookList = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList(uid)
         if(daysAfter.isNotEmpty()){
             if (daysAfter.toInt() != 0) {
                 val shuffleList = currentBookList.shuffled()
@@ -60,7 +63,7 @@ class CalendarModel: CalendarContract.Model {
     }
 
     override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener) {
-        val item = AddedBookDatabase.getInstance(context).dateDao().getIndividual(bookDateId)
+        val item = AddedBookDatabase.getInstance(context).dateDao().getIndividual(bookDateId, uid)
 
         if(item.date <= dateToday){
             calendarListener.canBookOnDateBeOpen(item.book)
@@ -78,7 +81,7 @@ class CalendarModel: CalendarContract.Model {
             val dateFormat = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault())
             val dayToAssign = dateFormat.format(calendar.time)
 
-            newDateList.add(RoomDate(0,dayToAssign.toString(), item.id, false))
+            newDateList.add(RoomDate(0,dayToAssign.toString(), item.id, false, uid))
             count += daysAfter
         }
         AddedBookDatabase.getInstance(context).dateDao().addAll(newDateList)
@@ -89,16 +92,16 @@ class CalendarModel: CalendarContract.Model {
 
         if(dayOfMonthStartAt!=7){
             for(a in 1..dayOfMonthStartAt){
-                list.add(RoomDate(0, "", -1,false))
+                list.add(RoomDate(0, "", -1,false, "0"))
             }
         }
 
         for(item in dateList){
             val dateOfItem = item.date.substring(3,5).toInt()
             for(i in (list.size-dayOfMonthStartAt+1)..<dateOfItem){
-                list.add(RoomDate(0, i.toString(), -1,false))
+                list.add(RoomDate(0, i.toString(), -1,false, "0"))
             }
-            list.add(RoomDate(item.dateId, dateOfItem.toString(), item.book, false))
+            list.add(RoomDate(item.dateId, dateOfItem.toString(), item.book, false, uid))
         }
 
         if(list.size <= dayInMonth){
@@ -108,7 +111,7 @@ class CalendarModel: CalendarContract.Model {
                 list.size-dayOfMonthStartAt
             }
             for(i in listSize+1..dayInMonth){
-                list.add(RoomDate(0, i.toString(), -1,false))
+                list.add(RoomDate(0, i.toString(), -1,false, "0"))
             }
         }
         //Log.e("counting", "$list")

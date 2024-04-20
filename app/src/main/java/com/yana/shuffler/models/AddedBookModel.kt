@@ -1,15 +1,18 @@
 package com.yana.shuffler.models
 
 import android.content.Context
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.contracts.AddedBook
 import com.yana.shuffler.models.room.AddedBookDatabase
 
 class AddedBookModel : AddedBook.Model{
+    private val uid = Firebase.auth.currentUser!!.uid
     override fun getAllBooks(
         context: Context,
         onFinishedListener: AddedBook.Model.OnFinishedListener
     ) {
-        val list = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList()
+        val list = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList(uid)
         onFinishedListener.gettingAllBooksListener(list)
     }
 
@@ -18,7 +21,7 @@ class AddedBookModel : AddedBook.Model{
         id: Int,
         onFinishedListener: AddedBook.Model.OnFinishedListener
     ) {
-        val checkShuffledList = AddedBookDatabase.getInstance(context).dateDao().checkIfTableExists()
+        val checkShuffledList = AddedBookDatabase.getInstance(context).dateDao().checkIfTableExists(uid)
         val item = AddedBookDatabase.getInstance(context).bookDao().getBook(id)
 
         if(!checkShuffledList){
@@ -43,8 +46,8 @@ class AddedBookModel : AddedBook.Model{
         context: Context,
         onFinishedListener: AddedBook.Model.OnFinishedListener
     ) {
-        val bookTable = AddedBookDatabase.getInstance(context).bookDao().checkIfTableExists()
-        val dateTable = AddedBookDatabase.getInstance(context).dateDao().checkIfTableExists()
+        val bookTable = AddedBookDatabase.getInstance(context).bookDao().checkIfTableExists(uid)
+        val dateTable = AddedBookDatabase.getInstance(context).dateDao().checkIfTableExists(uid)
 
         if(bookTable || dateTable){
             onFinishedListener.processDeleteAll()
@@ -57,8 +60,8 @@ class AddedBookModel : AddedBook.Model{
         context: Context,
         onFinishedListener: AddedBook.Model.OnFinishedListener
     ) {
-        AddedBookDatabase.getInstance(context).dateDao().deleteAllDates()
-        AddedBookDatabase.getInstance(context).bookDao().deleteAllBooks()
+        AddedBookDatabase.getInstance(context).dateDao().deleteAllDates(uid)
+        AddedBookDatabase.getInstance(context).bookDao().deleteAllBooks(uid)
 
         onFinishedListener.deleteAll("Deleted Successfully")
     }
