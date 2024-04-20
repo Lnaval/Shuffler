@@ -9,17 +9,27 @@
         android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:layout_gravity="center"
-            android:src="@drawable/img"
-            android:layout_width="300dp"
-            android:layout_height="200dp"/>
+
         <TextView
-            android:text="No Internet Connection"
-            android:textSize="18sp"
-            android:fontFamily="@font/montserrat_regular"
+            android:text="@string/network_problem_please_check_your_connection"
+            android:fontFamily="@font/montserrat_bold"
+            android:textSize="16sp"
             android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/okayButton"
+            android:text="@string/okay"
+            android:fontFamily="@font/montserrat_regular"
+            android:background="@drawable/button_background"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="10dp"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

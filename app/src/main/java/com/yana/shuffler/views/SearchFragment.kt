@@ -1,10 +1,14 @@
 package com.yana.shuffler.views
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.yana.shuffler.R
 import com.yana.shuffler.contracts.SearchContract
 import com.yana.shuffler.databinding.DialogBottomSheetBookDetailsBinding
+import com.yana.shuffler.databinding.DialogNoInternetBinding
 import com.yana.shuffler.databinding.FragmentSearchBinding
 import com.yana.shuffler.models.Book
 import com.yana.shuffler.models.SearchModel
@@ -130,5 +135,23 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     override fun displayWhenShuffledListExists() {
         mBottomSheetBinding.buttonAddToList.visibility = View.INVISIBLE
+    }
+
+    override fun displaySearchError() {
+        binding.progressIndicator.isVisible = false
+
+        val searchErrorDialog = Dialog(requireContext())
+        val searchErrorBinding = DialogNoInternetBinding.inflate(layoutInflater, null, false)
+        searchErrorDialog.apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            setContentView(searchErrorBinding.root)
+            window?.setLayout(900, 370)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            show()
+        }
+
+        searchErrorBinding.okayButton.setOnClickListener {
+            searchErrorDialog.cancel()
+        }
     }
 }

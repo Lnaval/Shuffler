@@ -1,7 +1,6 @@
 package com.yana.shuffler.models
 
 import android.content.Context
-import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.contracts.SearchContract
@@ -30,7 +29,7 @@ class SearchModel : SearchContract.Model {
             }
 
             override fun onFailure(call: Call<Books?>, t: Throwable) {
-                Log.e("TAG", "failed $t")
+                searchListener.searchError()
             }
         })
     }
@@ -68,7 +67,7 @@ class SearchModel : SearchContract.Model {
             }
 
             override fun onFailure(call: Call<Books?>, t: Throwable) {
-                Log.e("TAG", "failed $t")
+                searchListener.searchError()
             }
         })
     }

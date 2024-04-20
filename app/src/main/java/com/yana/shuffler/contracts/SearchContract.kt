@@ -17,6 +17,8 @@ interface SearchContract {
                 subjects: String
             )
 
+            fun searchError()
+
             fun shuffledListExists()
         }
         fun getBooks(
@@ -67,5 +69,6 @@ interface SearchContract {
             subjects: String
         )
         fun displayWhenShuffledListExists()
+        fun displaySearchError()
     }
 }

@@ -57,6 +57,10 @@ class SearchPresenter(
         mainView!!.setUpDialogBottomSheetBookDetails(title, author, firstYearPublished, image, subjects)
     }
 
+    override fun searchError() {
+        mainView!!.displaySearchError()
+    }
+
     override fun shuffledListExists() {
         mainView!!.displayWhenShuffledListExists()
     }
