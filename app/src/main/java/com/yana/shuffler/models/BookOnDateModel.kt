@@ -45,6 +45,6 @@ class BookOnDateModel : ShowBookOnDateContract.Model {
         AddedBookDatabase.getInstance(context).dateDao().deleteAllDates(uid)
         AddedBookDatabase.getInstance(context).bookDao().deleteAllBooks(uid)
 
-        bookOnDateListener.deleteBookShelf("Deleted Successfully")
+        //bookOnDateListener.deleteBookShelf("Deleted Successfully")
     }
 }

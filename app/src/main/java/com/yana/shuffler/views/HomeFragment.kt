@@ -103,8 +103,8 @@ class HomeFragment : Fragment(), HomeContract.View {
             binding.deleteBookshelf.visibility = View.VISIBLE
             binding.deleteBookshelf.setOnClickListener{
                 homePresenter.requestDeleteShelf(requireContext())
-                val transaction = (activity as MainActivity).supportFragmentManager.beginTransaction()
-                transaction.detach(HomeFragment()).attach(HomeFragment()).commit()
+                this@HomeFragment.onDestroyView()
+                (activity as MainActivity).replaceFragment(HomeFragment(), R.id.navHome)
             }
         }
     }

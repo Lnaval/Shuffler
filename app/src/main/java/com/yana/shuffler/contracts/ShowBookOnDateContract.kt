@@ -9,7 +9,7 @@ interface ShowBookOnDateContract {
             fun loadedBookOnDateDate(data: RoomBook, bookStatus: Boolean)
             fun updateBookStatusResult(result: Boolean)
             fun completedAllBooks(message: String)
-            fun deleteBookShelf(result: String)
+            //fun deleteBookShelf(result: String)
         }
 
         fun loadBookOnDateData(context: Context, id: Int, bookOnDateListener: OnFinishLoadBookOnDateDataListener)
@@ -21,7 +21,7 @@ interface ShowBookOnDateContract {
         fun displayLoadedData(data: RoomBook, bookStatus: Boolean)
         fun displayUpdatedBookStatus(result: Boolean)
         fun displayFinishedShelf(message: String)
-        fun displayDeleteShelfResult(result: String)
+        //fun displayDeleteShelfResult(result: String)
     }
 
     interface Presenter{

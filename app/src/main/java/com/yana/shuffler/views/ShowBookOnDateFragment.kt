@@ -10,8 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.yana.shuffler.MainActivity
 import com.yana.shuffler.R
 import com.yana.shuffler.contracts.ShowBookOnDateContract
 import com.yana.shuffler.databinding.DialogCompletedBinding
@@ -91,7 +91,6 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
     }
 
     override fun displayFinishedShelf(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         val completedDialog = Dialog(requireContext())
         val cSDialogCompletedBinding = DialogCompletedBinding.inflate(layoutInflater, null, false)
         completedDialog.apply {
@@ -104,14 +103,12 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
         }
         cSDialogCompletedBinding.confirm.setOnClickListener{
             bookOnDatePresenter.requestDeleteShelf(requireContext())
+            completedDialog.cancel()
+            (activity as MainActivity).replaceFragment(HomeFragment(), R.id.navHome)
         }
 
         cSDialogCompletedBinding.cancel.setOnClickListener{
             completedDialog.cancel()
         }
-    }
-
-    override fun displayDeleteShelfResult(result: String) {
-        Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show()
     }
 }
