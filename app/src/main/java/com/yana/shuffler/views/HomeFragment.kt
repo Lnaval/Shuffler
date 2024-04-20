@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.AuthActivity
 import com.yana.shuffler.BookQueryResult
 import com.yana.shuffler.MainActivity
@@ -56,6 +58,8 @@ class HomeFragment : Fragment(), HomeContract.View {
             val editor = sharedPreferences.edit()
             editor.putString(AUTH_KEY, "false")
             editor.apply()
+
+            Firebase.auth.signOut()
 
             val intent = Intent(this@HomeFragment.context, AuthActivity::class.java)
             startActivity(intent)

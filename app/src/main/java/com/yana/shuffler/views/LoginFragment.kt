@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.yana.shuffler.AuthActivity
 import com.yana.shuffler.MainActivity
 import com.yana.shuffler.databinding.FragmentLoginBinding
 
@@ -51,6 +52,10 @@ class LoginFragment : Fragment() {
                 authenticateUser(email, password)
             }
         }
+
+        binding.registerButton.setOnClickListener{
+            (activity as AuthActivity).replaceFragment(RegisterFragment())
+        }
     }
 
 
@@ -62,10 +67,9 @@ class LoginFragment : Fragment() {
                     // Sign in success, update UI with the signed-in user's information
                     val user = mAuth.currentUser
 
-                    val sharedPreferences =
-                        requireContext().getSharedPreferences(SP_STRING, MODE_PRIVATE)
+                    val sharedPreferences = requireContext().getSharedPreferences(SP_STRING, MODE_PRIVATE)
                     val editor = sharedPreferences.edit()
-                    editor.putString(AUTH_KEY, email)
+                    editor.putString(AUTH_KEY, user?.email)
                     editor.apply()
 
                     val intent = Intent(this@LoginFragment.context, MainActivity::class.java)
