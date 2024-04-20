@@ -71,7 +71,6 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setCancelable(false)
             setContentView(toDeleteBooksBinding.root)
-            window?.setLayout(900, 500)
             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             show()
         }

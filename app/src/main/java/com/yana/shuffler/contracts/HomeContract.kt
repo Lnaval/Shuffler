@@ -13,11 +13,13 @@ interface HomeContract {
         }
         fun getBookDataByDate(context: Context, dateToday: String, homeListener: HomeListener)
         fun getFiveBooks(context: Context, homeListener: HomeListener)
+        fun deleteShelf(context: Context)
     }
 
     interface Presenter{
         fun requestBookDataByDateToday(context: Context, dateToday: String)
         fun requestFiveBooks(context: Context)
+        fun requestDeleteShelf(context: Context)
     }
 
     interface View{

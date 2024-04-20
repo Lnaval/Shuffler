@@ -3,8 +3,6 @@ package com.yana.shuffler
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.databinding.ActivityMainBinding
 import com.yana.shuffler.views.AddedBooksFragment
 import com.yana.shuffler.views.CalendarFragment
@@ -37,12 +35,7 @@ class MainActivity : AppCompatActivity() {
     fun replaceFragment(fragment: Fragment, selectedItemId: Int) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
-            //.addToBackStack(null)
             .commit()
         binding.bottomNav.menu.findItem(selectedItemId).isChecked = true
-    }
-
-    fun getCurrentUserUid(): String{
-        return Firebase.auth.currentUser!!.uid
     }
 }

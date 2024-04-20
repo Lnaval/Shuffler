@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.yana.shuffler.AuthActivity
+import com.yana.shuffler.R
 import com.yana.shuffler.databinding.FragmentAuthHomeBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,7 +33,10 @@ class AuthHomeFragment : Fragment() {
 
         lifecycleScope.launch {
             delay(1000L)
-            (activity as AuthActivity).replaceFragment(LoginFragment())
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragmentContainerAuth, LoginFragment())
+                .commit()
         }
     }
 }

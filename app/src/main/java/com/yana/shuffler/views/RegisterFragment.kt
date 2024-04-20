@@ -1,6 +1,5 @@
 package com.yana.shuffler.views
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,14 +11,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.MainActivity
+import com.yana.shuffler.R
+import com.yana.shuffler.contracts.RegisterContract
 import com.yana.shuffler.databinding.FragmentRegisterBinding
+import com.yana.shuffler.models.RegisterModel
+import com.yana.shuffler.presenters.RegisterPresenter
 
-private const val SP_STRING = "sharedPrefs"
-private const val AUTH_KEY = "name"
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(), RegisterContract.View {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var registerPresenter: RegisterContract.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,41 +35,35 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mAuth = Firebase.auth
+        registerPresenter = RegisterPresenter(this, RegisterModel())
 
         binding.submit.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
 
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(requireContext(), "Both fields are required", Toast.LENGTH_SHORT).show()
-            } else {
-                registerUser(email, password)
-            }
+            registerPresenter.verifyUserInfoInput(email, password, requireActivity())
+        }
+
+        binding.loginButton.setOnClickListener{
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragmentContainerAuth, LoginFragment())
+                .commit()
         }
     }
 
-    private fun registerUser(email: String, password: String){
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    val user = mAuth.currentUser
+    override fun displayRegisterResult(result: String) {
+        Toast.makeText(
+            requireContext(),
+            result,
+            Toast.LENGTH_SHORT,
+        ).show()
+    }
 
-                    val sharedPreferences = requireContext().getSharedPreferences(SP_STRING, Context.MODE_PRIVATE)
-                    val editor = sharedPreferences.edit()
-                    editor.putString(AUTH_KEY, user?.email)
-                    editor.apply()
-
-                    val intent = Intent(this@RegisterFragment.context, MainActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
+    override fun displayRegisterSuccess() {
+        val intent = Intent(this@RegisterFragment.context, MainActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
 }

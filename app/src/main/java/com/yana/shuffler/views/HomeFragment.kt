@@ -1,6 +1,5 @@
 package com.yana.shuffler.views
 
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.AuthActivity
@@ -21,19 +19,16 @@ import com.yana.shuffler.R
 import com.yana.shuffler.contracts.HomeContract
 import com.yana.shuffler.databinding.FragmentHomeBinding
 import com.yana.shuffler.models.HomeModel
-import com.yana.shuffler.models.room.AddedBookDatabase
 import com.yana.shuffler.models.room.RoomBook
 import com.yana.shuffler.presenters.HomePresenter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-private const val SP_STRING = "sharedPrefs"
-private const val AUTH_KEY = "name"
 class HomeFragment : Fragment(), HomeContract.View {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var currentUser: FirebaseUser
+    private lateinit var homePresenter: HomePresenter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,21 +42,21 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         val dateToday = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(Date())
-        val homePresenter = HomePresenter(this, HomeModel())
+        homePresenter = HomePresenter(this, HomeModel())
         homePresenter.requestBookDataByDateToday(requireContext(), dateToday)
         homePresenter.requestFiveBooks(requireContext())
 
-        currentUser = Firebase.auth.currentUser!!
+        val currentUser = Firebase.auth.currentUser!!
         binding.subtitle.append(currentUser.email)
 
         binding.userBooksSeeAll.setOnClickListener {
             (activity as MainActivity).replaceFragment(AddedBooksFragment(), R.id.navBookList)
         }
         binding.logoutButton.setOnClickListener{
-            val sharedPreferences = requireContext().getSharedPreferences(SP_STRING, MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.putString(AUTH_KEY, "false")
-            editor.apply()
+//            val sharedPreferences = requireContext().getSharedPreferences(SP_STRING, MODE_PRIVATE)
+//            val editor = sharedPreferences.edit()
+//            editor.putString(AUTH_KEY, "false")
+//            editor.apply()
 
             Firebase.auth.signOut()
 
@@ -107,9 +102,9 @@ class HomeFragment : Fragment(), HomeContract.View {
         if(message == BookQueryResult.Completed){
             binding.deleteBookshelf.visibility = View.VISIBLE
             binding.deleteBookshelf.setOnClickListener{
-                AddedBookDatabase.getInstance(requireContext()).bookDao().deleteAllBooks(currentUser.uid)
-                AddedBookDatabase.getInstance(requireContext()).dateDao().deleteAllDates(currentUser.uid)
-                (activity as MainActivity).replaceFragment(this@HomeFragment, R.id.navHome)
+                homePresenter.requestDeleteShelf(requireContext())
+                val transaction = (activity as MainActivity).supportFragmentManager.beginTransaction()
+                transaction.detach(HomeFragment()).attach(HomeFragment()).commit()
             }
         }
     }

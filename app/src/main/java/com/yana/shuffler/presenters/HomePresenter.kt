@@ -28,4 +28,8 @@ class HomePresenter (
     override fun requestFiveBooks(context: Context) {
         model.getFiveBooks(context, this)
     }
+
+    override fun requestDeleteShelf(context: Context) {
+        model.deleteShelf(context)
+    }
 }

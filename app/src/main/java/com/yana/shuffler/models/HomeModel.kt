@@ -40,4 +40,9 @@ class HomeModel: HomeContract.Model {
         val data = AddedBookDatabase.getInstance(context).bookDao().getFiveBooks(uid)
         homeListener.fiveBooksResult(data)
     }
+
+    override fun deleteShelf(context: Context) {
+        AddedBookDatabase.getInstance(context).bookDao().deleteAllBooks(uid)
+        AddedBookDatabase.getInstance(context).dateDao().deleteAllDates(uid)
+    }
 }
