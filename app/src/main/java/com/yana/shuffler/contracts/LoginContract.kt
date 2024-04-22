@@ -1,10 +1,11 @@
 package com.yana.shuffler.contracts
-
-import com.yana.shuffler.AuthResult
-
 interface LoginContract {
     interface Model {
-        fun checkUserAuth(email: String, password: String) : AuthResult
+        interface LoginListener {
+            fun onAuthSuccess()
+            fun onAuthFailure(result: String)
+        }
+        fun checkUserAuth(email: String, password: String, loginListener: LoginListener)
     }
 
     interface Presenter{
@@ -12,7 +13,7 @@ interface LoginContract {
     }
 
     interface View{
-       fun displayOnError(result: String)
-       fun displayOnSuccess()
+        fun displayOnError(result: String)
+        fun displayOnSuccess()
     }
 }

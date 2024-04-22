@@ -1,7 +1,5 @@
 package com.yana.shuffler.models
 
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.contracts.AddedBook
 import com.yana.shuffler.models.room.BookDao
 import com.yana.shuffler.models.room.DateDao

@@ -1,10 +1,11 @@
 package com.yana.shuffler.contracts
-
-import com.yana.shuffler.AuthResult
-
 interface RegisterContract {
     interface Model{
-        fun registerUser(email: String, password: String) : AuthResult
+        interface Listener{
+            fun onSuccess()
+            fun onFailure(result: String)
+        }
+        fun registerUser(email: String, password: String, listener: Listener)
     }
 
     interface Presenter {

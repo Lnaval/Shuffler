@@ -1,20 +1,20 @@
 package com.yana.shuffler.presenters
 
-import android.app.Activity
-import com.yana.shuffler.AuthResult
 import com.yana.shuffler.contracts.LoginContract
 
 class LoginPresenter(
     private var mainView: LoginContract.View?,
     private val model: LoginContract.Model
-) : LoginContract.Presenter {
+) : LoginContract.Presenter, LoginContract.Model.LoginListener {
+    override fun onAuthSuccess() {
+        mainView!!.displayOnSuccess()
+    }
+
+    override fun onAuthFailure(result: String) {
+        mainView!!.displayOnError(result)
+    }
 
     override fun onClickLogin(email: String, password: String) {
-        val result = model.checkUserAuth(email, password)
-        if(result==AuthResult.Success){
-            mainView!!.displayOnSuccess()
-        } else {
-            mainView!!.displayOnError(result.message)
-        }
+        model.checkUserAuth(email, password, this)
     }
 }

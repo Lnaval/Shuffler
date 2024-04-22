@@ -6,6 +6,5 @@ enum class AuthResult (val message: String) {
     InvalidCred("Invalid Credentials"),
     Others("Something went wrong"),
     InUse("The email address is already in use by another account"),
-    BadFormat("The email address is badly formatted."),
-    Success("Success")
+    BadFormat("The required fields are badly formatted.")
 }

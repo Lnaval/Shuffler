@@ -1,7 +1,6 @@
 package com.yana.shuffler.models
 
 import android.app.Activity
-import android.util.Log
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.ktx.auth
@@ -10,25 +9,33 @@ import com.yana.shuffler.AuthResult
 import com.yana.shuffler.contracts.LoginContract
 
 class LoginModel(private val activity: Activity) : LoginContract.Model {
-    override fun checkUserAuth(email: String, password: String): AuthResult {
+    override fun checkUserAuth(
+        email: String,
+        password: String,
+        loginListener: LoginContract.Model.LoginListener
+    ) {
         if (email.isEmpty() || password.isEmpty()) {
-            return AuthResult.Required
+            loginListener.onAuthFailure(AuthResult.Required.message)
         } else {
             val mAuth = Firebase.auth
-            var status = AuthResult.Others
             mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
+                .addOnCompleteListener(activity) { task ->
                     if (task.isSuccessful) {
-                        status = AuthResult.Success
+                        loginListener.onAuthSuccess()
                     } else {
                         when (task.exception) {
-                            is FirebaseNetworkException -> status = AuthResult.NetworkError
-                            is FirebaseAuthInvalidCredentialsException -> status = AuthResult.InvalidCred
-                            else -> status = AuthResult.Others
+                            is FirebaseNetworkException -> {
+                                loginListener.onAuthFailure(AuthResult.NetworkError.message)
+                            }
+                            is FirebaseAuthInvalidCredentialsException -> {
+                                loginListener.onAuthFailure(AuthResult.InvalidCred.message)
+                            }
+                            else -> {
+                                loginListener.onAuthFailure(AuthResult.Others.message)
+                            }
                         }
                     }
                 }
-            return status
         }
     }
 }

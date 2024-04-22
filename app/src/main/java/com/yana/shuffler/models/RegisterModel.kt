@@ -8,26 +8,34 @@ import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.AuthResult
 import com.yana.shuffler.contracts.RegisterContract
 
-class RegisterModel(private val  activity: Activity) : RegisterContract.Model{
-    override fun registerUser(email: String, password: String): AuthResult {
+class RegisterModel(private val activity: Activity) : RegisterContract.Model{
+    override fun registerUser(
+        email: String,
+        password: String,
+        listener: RegisterContract.Model.Listener
+    ) {
         if (email.isEmpty() || password.isEmpty()) {
-            return AuthResult.Required
+            listener.onFailure(AuthResult.Required.message)
         } else {
             val mAuth = Firebase.auth
-            var status = AuthResult.Others
             mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
+                .addOnCompleteListener(activity) { task ->
                     if (task.isSuccessful) {
-                        status = AuthResult.Success
+                        listener.onSuccess()
                     } else {
                         when(task.exception){
-                            is FirebaseAuthUserCollisionException -> status = AuthResult.InUse
-                            is FirebaseAuthInvalidCredentialsException -> status = AuthResult.BadFormat
-                            else -> status = AuthResult.Others
+                            is FirebaseAuthUserCollisionException -> {
+                                listener.onFailure(AuthResult.InUse.message)
+                            }
+                            is FirebaseAuthInvalidCredentialsException -> {
+                                listener.onFailure(AuthResult.BadFormat.message)
+                            }
+                            else -> {
+                                listener.onFailure(AuthResult.Others.message)
+                            }
                         }
                     }
                 }
-            return status
         }
     }
 }

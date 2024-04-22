@@ -32,11 +32,12 @@ class SearchPresenter(
     }
 
     override fun onViewBook(book: Book) {
-        val book = model.viewBook(book, this)
-        val author = if(book.author.isEmpty()) "Not Found" else book.author.toString()
+        val item = model.viewBook(book, this)
 
-        val year = if(book.firstPublishYear == null) "Not Found" else book.firstPublishYear.toString()
-        mainView!!.setUpDialogBottomSheetBookDetails(book.title, author, year, book.image, book.subject.toString())
+        val author = if(item.author.isEmpty()) "Not Found" else book.author.toString()
+        val year = if(item.firstPublishYear == null) "Not Found" else item.firstPublishYear.toString()
+
+        mainView!!.setUpDialogBottomSheetBookDetails(item.title, author, year, item.image, item.subject.toString())
     }
 
     override fun checkShuffledList(uid: String) {

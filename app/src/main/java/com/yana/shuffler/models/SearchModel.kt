@@ -40,11 +40,11 @@ class SearchModel (private val bookDao: BookDao, private val dateDao: DateDao) :
     ): Boolean {
         val bookToAdd = RoomBook(0, title, image, author, subjects, uid)
 
-        if(bookDao.checkIfBookExists(bookToAdd.title, uid)){
-            return false
+        return if(bookDao.checkIfBookExists(bookToAdd.title, uid)){
+            false
         } else {
             bookDao.addBook(bookToAdd)
-            return true
+            true
         }
     }
 
