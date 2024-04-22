@@ -4,32 +4,25 @@ import com.yana.shuffler.models.room.RoomBook
 
 interface AddedBook {
     interface Model{
-        interface OnFinishedListener{
-            fun gettingAllBooksListener(books : List<RoomBook>)
-            fun processDeleteBook(book: RoomBook)
-            fun deleteBookResult(result: String)
-            fun processDeleteAll()
-            fun deleteAll(result: String)
-        }
 
-        fun getAllBooks(onFinishedListener: OnFinishedListener)
-        fun requestToDeleteBook(id: Int, onFinishedListener: OnFinishedListener)
-        fun deleteBook(id: Int, onFinishedListener: OnFinishedListener)
-        fun requestToDeleteAllBooks(onFinishedListener: OnFinishedListener)
-        fun deleteAllBooks(onFinishedListener: OnFinishedListener)
+        fun getAllBooks(uid: String) : List<RoomBook>
+        fun requestToDeleteBook(id: Int, uid: String) : Boolean
+        fun deleteBook(id: Int) : String
+        fun requestToDeleteAllBooks(uid: String) : Boolean
+        fun deleteAllBooks(uid: String)
     }
 
     interface Presenter{
-        fun getAllBooks()
-        fun requestDelete(id: Int)
-        fun confirmDelete(id: Int)
-        fun requestDeleteAll()
-        fun confirmDeleteAll()
+        fun onViewReady(uid: String)
+        fun onDeleteClicked(id: Int, uid: String)
+        fun onConfirmDeletionClicked(id: Int)
+        fun onDeleteAllClicked(uid: String)
+        fun onConfirmDeleteAllClicked(uid: String)
     }
 
     interface View{
         fun setUpAddedBooksAdapter(books: List<RoomBook>)
-        fun confirmToDeleteBookDisplay(book: RoomBook)
+        fun confirmToDeleteBookDisplay(id: Int)
         fun displayDeleteResult(result: String)
 
         fun confirmToDeleteAllBooks()

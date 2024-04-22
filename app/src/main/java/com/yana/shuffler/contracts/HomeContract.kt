@@ -7,18 +7,17 @@ interface HomeContract {
     interface Model{
         interface HomeListener{
             fun bookDataByDateResult(book: RoomBook)
-            fun fiveBooksResult(books: List<RoomBook>)
-            fun bookAlreadyReadRsult(result: BookQueryResult)
+            fun bookStatusResult(result: BookQueryResult)
         }
-        fun getBookDataByDate(dateToday: String, homeListener: HomeListener)
-        fun getFiveBooks(homeListener: HomeListener)
-        fun deleteShelf()
+        fun getBookDataByDate(dateToday: String, homeListener: HomeListener, uid: String)
+        fun getFiveBooks(uid: String) : List<RoomBook>
+        fun deleteShelf(uid: String)
     }
 
     interface Presenter{
-        fun requestBookDataByDateToday(dateToday: String)
-        fun requestFiveBooks()
-        fun requestDeleteShelf()
+        fun requestBookDataByDateToday(dateToday: String, uid: String)
+        fun requestFiveBooks(uid: String)
+        fun requestDeleteShelf(uid: String)
     }
 
     interface View{

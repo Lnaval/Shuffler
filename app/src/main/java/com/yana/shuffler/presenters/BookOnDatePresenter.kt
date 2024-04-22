@@ -19,15 +19,15 @@ class BookOnDatePresenter(
         mainView!!.displayFinishedShelf(message)
     }
 
-    override fun requestBookOnDateData(id: Int) {
-        model.loadBookOnDateData(id, this)
+    override fun onClickDateOnCalendar(id: Int, uid: String) {
+        model.loadBookOnDateData(id, this, uid)
     }
 
-    override fun requestUpdateBookStatus(dateId: Int) {
-        model.updateBookStatus(dateId, this)
+    override fun onClickUpdateStatus(dateId: Int, uid: String) {
+        model.updateBookStatus(dateId, this, uid)
     }
 
-    override fun requestDeleteShelf() {
-        model.deleteBookShelf(this)
+    override fun onClickDeleteShelf(uid: String) {
+        model.deleteBookShelf(this, uid)
     }
 }

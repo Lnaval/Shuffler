@@ -12,23 +12,20 @@ class HomePresenter (
         mainView!!.displayRetrievedBook(book)
     }
 
-    override fun fiveBooksResult(books: List<RoomBook>) {
-        mainView!!.displayRetrievedFiveBooks(books)
-    }
-
-    override fun bookAlreadyReadRsult(result: BookQueryResult) {
+    override fun bookStatusResult(result: BookQueryResult) {
         mainView!!.displayAlreadyReadMessage(result)
     }
 
-    override fun requestBookDataByDateToday(dateToday: String) {
-        model.getBookDataByDate(dateToday, this)
+    override fun requestBookDataByDateToday(dateToday: String, uid: String) {
+        model.getBookDataByDate(dateToday, this, uid)
     }
 
-    override fun requestFiveBooks() {
-        model.getFiveBooks(this)
+    override fun requestFiveBooks(uid: String) {
+        val books = model.getFiveBooks(uid)
+        mainView!!.displayRetrievedFiveBooks(books)
     }
 
-    override fun requestDeleteShelf() {
-        model.deleteShelf()
+    override fun requestDeleteShelf(uid: String) {
+        model.deleteShelf(uid)
     }
 }

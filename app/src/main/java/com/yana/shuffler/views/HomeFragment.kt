@@ -29,6 +29,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var homePresenter: HomePresenter
+    private lateinit var uid: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,12 +42,14 @@ class HomeFragment : Fragment(), HomeContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val currentUser = Firebase.auth.currentUser!!
+        uid = currentUser.uid
+
         val dateToday = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(Date())
         homePresenter = HomePresenter(this, ShufflerApp.appContainer.homeModel)
-        homePresenter.requestBookDataByDateToday(dateToday)
-        homePresenter.requestFiveBooks()
+        homePresenter.requestBookDataByDateToday(dateToday, uid)
+        homePresenter.requestFiveBooks(uid)
 
-        val currentUser = Firebase.auth.currentUser!!
         binding.subtitle.append(currentUser.email)
 
         binding.userBooksSeeAll.setOnClickListener {
@@ -97,7 +100,7 @@ class HomeFragment : Fragment(), HomeContract.View {
         if(message == BookQueryResult.Completed){
             binding.deleteBookshelf.visibility = View.VISIBLE
             binding.deleteBookshelf.setOnClickListener{
-                homePresenter.requestDeleteShelf()
+                homePresenter.requestDeleteShelf(uid)
                 this@HomeFragment.onDestroyView()
                 (activity as MainActivity).replaceFragment(HomeFragment(), R.id.navHome)
             }

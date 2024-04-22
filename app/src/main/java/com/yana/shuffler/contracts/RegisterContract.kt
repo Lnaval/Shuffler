@@ -1,18 +1,14 @@
 package com.yana.shuffler.contracts
 
-import android.app.Activity
+import com.yana.shuffler.AuthResult
 
 interface RegisterContract {
     interface Model{
-        interface ModelListener{
-            fun registerFail(result: String)
-            fun registerSuccess()
-        }
-        fun registerUser(email: String, password: String, activity: Activity, modelListener: ModelListener)
+        fun registerUser(email: String, password: String) : AuthResult
     }
 
     interface Presenter {
-        fun verifyUserInfoInput(email: String, password: String, activity: Activity)
+        fun onClickRegister(email: String, password: String)
     }
 
     interface View {

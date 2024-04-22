@@ -5,35 +5,29 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.yana.shuffler.AuthResult
 import com.yana.shuffler.contracts.RegisterContract
 
-class RegisterModel : RegisterContract.Model{
-    override fun registerUser(
-        email: String,
-        password: String,
-        activity: Activity,
-        modelListener: RegisterContract.Model.ModelListener
-    ) {
+class RegisterModel(private val  activity: Activity) : RegisterContract.Model{
+    override fun registerUser(email: String, password: String): AuthResult {
         if (email.isEmpty() || password.isEmpty()) {
-            modelListener.registerFail("Both fields are required")
+            return AuthResult.Required
         } else {
             val mAuth = Firebase.auth
-
+            var status = AuthResult.Others
             mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity) { task ->
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        modelListener.registerSuccess()
+                        status = AuthResult.Success
                     } else {
                         when(task.exception){
-                            is FirebaseAuthUserCollisionException ->
-                                modelListener.registerFail("The email address is already in use by another account")
-                            is FirebaseAuthInvalidCredentialsException ->
-                                modelListener.registerFail("The email address is badly formatted.")
-                            else ->
-                                modelListener.registerFail("Authentication failed")
+                            is FirebaseAuthUserCollisionException -> status = AuthResult.InUse
+                            is FirebaseAuthInvalidCredentialsException -> status = AuthResult.BadFormat
+                            else -> status = AuthResult.Others
                         }
                     }
                 }
+            return status
         }
     }
 }

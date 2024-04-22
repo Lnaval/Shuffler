@@ -6,38 +6,29 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.yana.shuffler.AuthResult
 import com.yana.shuffler.contracts.LoginContract
 
-class LoginModel : LoginContract.Model {
-    override fun checkUserAuth(
-        email: String,
-        password: String,
-        activity: Activity,
-        loginListener: LoginContract.Model.LoginListener
-    ) {
+class LoginModel(private val activity: Activity) : LoginContract.Model {
+    override fun checkUserAuth(email: String, password: String): AuthResult {
         if (email.isEmpty() || password.isEmpty()) {
-            loginListener.onAuthFailure("Both fields are required")
+            return AuthResult.Required
         } else {
             val mAuth = Firebase.auth
+            var status = AuthResult.Others
             mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity) { task ->
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        loginListener.onAuthSuccess()
+                        status = AuthResult.Success
                     } else {
-                        Log.e("TAG", "checkUserAuth: ${task.exception}", )
                         when (task.exception) {
-                            is FirebaseNetworkException -> {
-                                loginListener.onAuthFailure("Network Error")
-                            }
-                            is FirebaseAuthInvalidCredentialsException -> {
-                                loginListener.onAuthFailure("Invalid Credentials")
-                            }
-                            else -> {
-                                loginListener.onAuthFailure("Something went wrong")
-                            }
+                            is FirebaseNetworkException -> status = AuthResult.NetworkError
+                            is FirebaseAuthInvalidCredentialsException -> status = AuthResult.InvalidCred
+                            else -> status = AuthResult.Others
                         }
                     }
                 }
+            return status
         }
     }
 }

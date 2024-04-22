@@ -1,18 +1,14 @@
 package com.yana.shuffler.contracts
 
-import android.app.Activity
+import com.yana.shuffler.AuthResult
 
 interface LoginContract {
     interface Model {
-        interface LoginListener {
-            fun onAuthSuccess()
-            fun onAuthFailure(result: String)
-        }
-        fun checkUserAuth(email: String, password: String, activity: Activity, loginListener: LoginListener)
+        fun checkUserAuth(email: String, password: String) : AuthResult
     }
 
     interface Presenter{
-        fun requestCheckUserInput(email: String, password: String, activity: Activity)
+        fun onClickLogin(email: String, password: String)
     }
 
     interface View{

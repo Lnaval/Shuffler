@@ -1,49 +1,39 @@
 package com.yana.shuffler.presenters
 
 import com.yana.shuffler.contracts.AddedBook
-import com.yana.shuffler.models.room.RoomBook
 
 class AddedBookPresenter(
     private var mainView: AddedBook.View?,
     private var model: AddedBook.Model
-) : AddedBook.Presenter, AddedBook.Model.OnFinishedListener{
-    override fun gettingAllBooksListener(books: List<RoomBook>) {
+) : AddedBook.Presenter{
+    override fun onViewReady(uid: String) {
+        val books = model.getAllBooks(uid)
         mainView!!.setUpAddedBooksAdapter(books)
     }
 
-    override fun processDeleteBook(book: RoomBook) {
-        mainView!!.confirmToDeleteBookDisplay(book)
+    override fun onDeleteClicked(id: Int, uid: String) {
+        val isPossible = model.requestToDeleteBook(id, uid)
+        if(isPossible){
+            mainView!!.confirmToDeleteBookDisplay(id)
+        } else {
+            mainView!!.displayDeleteResult("Can't delete item")
+        }
     }
 
-    override fun deleteBookResult(result: String) {
-        mainView!!.displayDeleteResult(result)
+    override fun onConfirmDeletionClicked(id: Int) {
+        model.deleteBook(id)
+        mainView!!.displayDeleteResult("Deleted Successfully")
     }
 
-    override fun processDeleteAll() {
-        mainView!!.confirmToDeleteAllBooks()
+    override fun onDeleteAllClicked(uid: String) {
+        val isPossible = model.requestToDeleteAllBooks(uid)
+        if(isPossible){
+            mainView!!.confirmToDeleteAllBooks()
+        }
     }
 
-    override fun deleteAll(result: String) {
-        mainView!!.displayDeleteResult(result)
-    }
-
-    override fun getAllBooks() {
-        model.getAllBooks(this)
-    }
-
-    override fun requestDelete(id: Int) {
-        model.requestToDeleteBook(id, this)
-    }
-
-    override fun confirmDelete(id: Int) {
-        model.deleteBook(id, this)
-    }
-
-    override fun requestDeleteAll() {
-        model.requestToDeleteAllBooks(this)
-    }
-
-    override fun confirmDeleteAll() {
-        model.deleteAllBooks(this)
+    override fun onConfirmDeleteAllClicked(uid: String) {
+        model.deleteAllBooks(uid)
+        mainView!!.displayDeleteResult("Deleted Successfully")
     }
 }

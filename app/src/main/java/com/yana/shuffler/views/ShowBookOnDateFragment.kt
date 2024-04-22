@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.MainActivity
 import com.yana.shuffler.R
 import com.yana.shuffler.ShufflerApp
@@ -24,6 +26,7 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
     private var _binding: FragmentShowBookOnDateBinding? = null
     private val binding get() = _binding!!
     private lateinit var bookOnDatePresenter: BookOnDatePresenter
+    private lateinit var uid: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,8 +39,9 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         val id = requireArguments().getInt(ID_KEY)
+        uid = Firebase.auth.currentUser!!.uid
         bookOnDatePresenter = BookOnDatePresenter(this, ShufflerApp.appContainer.bookOnDateModel)
-        bookOnDatePresenter.requestBookOnDateData(id)
+        bookOnDatePresenter.onClickDateOnCalendar(id, uid)
     }
 
     override fun onDestroyView() {
@@ -77,7 +81,7 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
             }
 
             binding.completedButton.setOnClickListener {
-                bookOnDatePresenter.requestUpdateBookStatus(data.id)
+                bookOnDatePresenter.onClickUpdateStatus(data.id, uid)
             }
         }
     }
@@ -102,7 +106,7 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
             show()
         }
         cSDialogCompletedBinding.confirm.setOnClickListener{
-            bookOnDatePresenter.requestDeleteShelf()
+            bookOnDatePresenter.onClickDeleteShelf(uid)
             completedDialog.cancel()
             (activity as MainActivity).replaceFragment(HomeFragment(), R.id.navHome)
         }

@@ -5,50 +5,39 @@ import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.contracts.AddedBook
 import com.yana.shuffler.models.room.BookDao
 import com.yana.shuffler.models.room.DateDao
+import com.yana.shuffler.models.room.RoomBook
 
 class AddedBookModel(private val bookDao: BookDao, private val dateDao: DateDao) : AddedBook.Model{
-    private val uid = Firebase.auth.currentUser!!.uid
-    override fun getAllBooks(onFinishedListener: AddedBook.Model.OnFinishedListener) {
-        val list = bookDao.getAllBookInList(uid)
-        onFinishedListener.gettingAllBooksListener(list)
+    override fun getAllBooks(uid: String): List<RoomBook> {
+        return bookDao.getAllBookInList(uid)
     }
 
-    override fun requestToDeleteBook(
-        id: Int,
-        onFinishedListener: AddedBook.Model.OnFinishedListener
-    ) {
+    override fun requestToDeleteBook(id: Int, uid: String): Boolean {
         val checkShuffledList = dateDao.checkIfTableExists(uid)
         val item = bookDao.getBook(id)
 
         if(!checkShuffledList){
             if(item!=null){
-                onFinishedListener.processDeleteBook(item)
+                return true
             }
-        } else {
-            onFinishedListener.deleteBookResult("Can't delete item")
         }
+        return false
     }
 
-    override fun deleteBook(id: Int, onFinishedListener: AddedBook.Model.OnFinishedListener) {
+    override fun deleteBook(id: Int): String {
         bookDao.deleteBook(id)
-        onFinishedListener.deleteBookResult("Deleted Successfully")
+        return "Deleted Successfully"
     }
 
-    override fun requestToDeleteAllBooks(onFinishedListener: AddedBook.Model.OnFinishedListener) {
+    override fun requestToDeleteAllBooks(uid: String): Boolean {
         val bookTable = bookDao.checkIfTableExists(uid)
         val dateTable = dateDao.checkIfTableExists(uid)
 
-        if(bookTable || dateTable){
-            onFinishedListener.processDeleteAll()
-        } else {
-            onFinishedListener.deleteAll("No data to delete")
-        }
+        return bookTable || dateTable
     }
 
-    override fun deleteAllBooks(onFinishedListener: AddedBook.Model.OnFinishedListener) {
+    override fun deleteAllBooks(uid: String) {
         dateDao.deleteAllDates(uid)
         bookDao.deleteAllBooks(uid)
-
-        onFinishedListener.deleteAll("Deleted Successfully")
     }
 }

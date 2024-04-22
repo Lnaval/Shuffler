@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,8 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.MainActivity
 import com.yana.shuffler.R
 import com.yana.shuffler.ShufflerApp
@@ -25,6 +28,7 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
     private val binding get() = _binding!!
 
     private lateinit var addedBookPresenter: AddedBook.Presenter
+    private lateinit var uid: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,11 +40,13 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        uid = Firebase.auth.currentUser!!.uid
+        Log.e("TAG", "onViewCreated: $uid", )
         addedBookPresenter = AddedBookPresenter(this, ShufflerApp.appContainer.addedBookModel)
-        addedBookPresenter.getAllBooks()
+        addedBookPresenter.onViewReady(uid)
 
         binding.deleteBookshelf.setOnClickListener {
-            addedBookPresenter.requestDeleteAll()
+            addedBookPresenter.onDeleteAllClicked(uid)
         }
     }
 
@@ -54,7 +60,7 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
             binding.emptyBookDialogue.visibility = View.VISIBLE
         } else {
             val addedBooksAdapter = AddedBooksAdapter{
-                addedBookPresenter.requestDelete(it)
+                addedBookPresenter.onDeleteClicked(it, uid)
             }
             addedBooksAdapter.asyncListDiffer.submitList(books)
             binding.addedBooks.apply {
@@ -64,7 +70,7 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
         }
     }
 
-    override fun confirmToDeleteBookDisplay(book: RoomBook) {
+    override fun confirmToDeleteBookDisplay(id: Int) {
         val toDeleteBookDialog = Dialog(requireContext())
         val toDeleteBooksBinding = DialogConfirmDeleteBinding.inflate(layoutInflater, null, false)
         toDeleteBookDialog.apply {
@@ -75,10 +81,10 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
             show()
         }
 
-        toDeleteBooksBinding.message.text = getString(R.string.delete_book, book.title, book.author)
+        toDeleteBooksBinding.message.text = getString(R.string.delete_book)
 
         toDeleteBooksBinding.confirm.setOnClickListener {
-            addedBookPresenter.confirmDelete(book.id)
+            addedBookPresenter.onConfirmDeletionClicked(id)
             toDeleteBookDialog.cancel()
             (activity as MainActivity).replaceFragment(AddedBooksFragment(), R.id.navBookList)
         }
@@ -107,7 +113,7 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
         toDeleteBooksBinding.message.text = getString(R.string.delete_bookshelf)
 
         toDeleteBooksBinding.confirm.setOnClickListener {
-            addedBookPresenter.confirmDeleteAll()
+            addedBookPresenter.onConfirmDeleteAllClicked(uid)
             toDeleteBookDialog.cancel()
             (activity as MainActivity).replaceFragment(AddedBooksFragment(), R.id.navBookList)
         }

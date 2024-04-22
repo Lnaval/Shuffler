@@ -10,9 +10,9 @@ interface ShowBookOnDateContract {
             fun completedAllBooks(message: String)
         }
 
-        fun loadBookOnDateData(id: Int, bookOnDateListener: OnFinishLoadBookOnDateDataListener)
-        fun updateBookStatus(dateId: Int, bookOnDateListener: OnFinishLoadBookOnDateDataListener)
-        fun deleteBookShelf(bookOnDateListener: OnFinishLoadBookOnDateDataListener)
+        fun loadBookOnDateData(id: Int, bookOnDateListener: OnFinishLoadBookOnDateDataListener, uid: String)
+        fun updateBookStatus(dateId: Int, bookOnDateListener: OnFinishLoadBookOnDateDataListener, uid: String)
+        fun deleteBookShelf(bookOnDateListener: OnFinishLoadBookOnDateDataListener, uid: String)
     }
 
     interface View{
@@ -22,8 +22,8 @@ interface ShowBookOnDateContract {
     }
 
     interface Presenter{
-        fun requestBookOnDateData(id: Int)
-        fun requestUpdateBookStatus(dateId: Int)
-        fun requestDeleteShelf()
+        fun onClickDateOnCalendar(id: Int, uid: String)
+        fun onClickUpdateStatus(dateId: Int, uid: String)
+        fun onClickDeleteShelf(uid: String)
     }
 }

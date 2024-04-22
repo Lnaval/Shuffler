@@ -35,13 +35,13 @@ class LoginFragment : Fragment(), LoginContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loginPresenter = LoginPresenter(this, LoginModel())
+        loginPresenter = LoginPresenter(this, LoginModel(requireActivity()))
 
         binding.submit.setOnClickListener {
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
 
-            loginPresenter.requestCheckUserInput(email, password, requireActivity())
+            loginPresenter.onClickLogin(email, password)
         }
 
         binding.registerButton.setOnClickListener{

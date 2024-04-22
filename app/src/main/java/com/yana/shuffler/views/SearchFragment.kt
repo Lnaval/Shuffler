@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.R
 import com.yana.shuffler.ShufflerApp
 import com.yana.shuffler.contracts.SearchContract
@@ -32,6 +34,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     private lateinit var searchKey: String
     private lateinit var mBottomSheetDialog: BottomSheetDialog
     private lateinit var mBottomSheetBinding: DialogBottomSheetBookDetailsBinding
+    private lateinit var uid: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +47,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        uid = Firebase.auth.currentUser!!.uid
         searchPresenter = SearchPresenter(this, ShufflerApp.appContainer.searchModel)
 
         val search = binding.searchView
@@ -52,7 +56,7 @@ class SearchFragment : Fragment(), SearchContract.View {
                 if(query!=null) {
                     search.clearFocus()
                     searchKey = query
-                    searchPresenter.searchBooks(searchKey, 1)
+                    searchPresenter.onSearchBooks(searchKey, 1)
                     binding.progressIndicator.isVisible = true
                 }
                 return false
@@ -65,7 +69,7 @@ class SearchFragment : Fragment(), SearchContract.View {
 
         binding.bookSearchResults.addOnScrollListener(object : EndlessScrollListener() {
             override fun onLoadMore(page: Int) {
-                searchPresenter.searchMore(searchKey, page)
+                searchPresenter.onSearchMore(searchKey, page)
                 binding.progressIndicator.isVisible = true
             }
         })
@@ -78,7 +82,7 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     override fun setUpSearchedItemsList(books: ArrayList<Book>) {
         searchedBooks = SearchedBooksAdapter{
-            searchPresenter.viewBook(it)
+            searchPresenter.onViewBook(it)
         }
         searchedBooks.saveData(books)
         binding.bookSearchResults.apply {
@@ -124,10 +128,10 @@ class SearchFragment : Fragment(), SearchContract.View {
                 .thumbnail(Glide.with(bookImage).load(R.drawable.image_loading))
                 .into(bookImage)
 
-            searchPresenter.checkShuffledList()
+            searchPresenter.checkShuffledList(uid)
 
             buttonAddToList.setOnClickListener{
-                searchPresenter.addBook(title, author, firstYearPublished, image, subjects)
+                searchPresenter.addBook(title, author, firstYearPublished, image, subjects, uid)
             }
         }
         mBottomSheetDialog.show()

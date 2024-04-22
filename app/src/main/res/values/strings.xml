@@ -45,7 +45,7 @@
     <string name="delete_shelf">Delete Shelf</string>
     <string name="confirm_delete">Are you sure you want to delete this book from your shelf?</string>
     <string name="delete_bookshelf">Are you sure you want to delete all books in your bookshelf? This will empty out your calendar.</string>
-    <string name="delete_book">Are you sure you want to delete the book %1$s by %2$s?</string>
+    <string name="delete_book">Are you sure you want to delete the book?</string>
     <string name="register">Register</string>
     <string name="network_problem_please_check_your_connection">Network Problem. Please Check your connection.</string>
     <string name="okay">Okay</string>

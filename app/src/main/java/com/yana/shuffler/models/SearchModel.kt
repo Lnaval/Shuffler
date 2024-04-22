@@ -1,7 +1,5 @@
 package com.yana.shuffler.models
 
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.contracts.SearchContract
 import com.yana.shuffler.contracts.SearchContract.Model.OnFinishedSearchListener
 import com.yana.shuffler.models.room.BookDao
@@ -15,8 +13,6 @@ import retrofit2.Response
 
 class SearchModel (private val bookDao: BookDao, private val dateDao: DateDao) : SearchContract.Model {
     private val apiService = RetrofitInstance.build().create(OpenLibraryInterface::class.java)
-    private val uid = Firebase.auth.currentUser!!.uid
-
     override fun getBooks(searchKey: String, pageNumber: Int, searchListener: OnFinishedSearchListener
     ) {
         val data = apiService.searchBooks(searchKey, pageNumber)
@@ -40,15 +36,15 @@ class SearchModel (private val bookDao: BookDao, private val dateDao: DateDao) :
         firstYearPublished: String,
         image: String?,
         subjects: String,
-        searchListener: OnFinishedSearchListener
-    ) {
+        uid: String
+    ): Boolean {
         val bookToAdd = RoomBook(0, title, image, author, subjects, uid)
 
         if(bookDao.checkIfBookExists(bookToAdd.title, uid)){
-            searchListener.onBookAdded("Book Already Added")
+            return false
         } else {
             bookDao.addBook(bookToAdd)
-            searchListener.onBookAdded("Book Added")
+            return true
         }
     }
 
@@ -69,24 +65,20 @@ class SearchModel (private val bookDao: BookDao, private val dateDao: DateDao) :
         })
     }
 
-    override fun viewBook(book: Book, searchListener: OnFinishedSearchListener) {
-        val author = if(book.author.isNullOrEmpty()) "Not Found" else book.author.toString()
-        val year = if(book.firstPublishYear==0) "Not Found" else book.firstPublishYear.toString()
-
+    override fun viewBook(book: Book, searchListener: OnFinishedSearchListener): Book {
         val subjects =
-            if(book.subject.isNullOrEmpty()){
-                "Not Found"
+            if (book.subject.isNullOrEmpty()) {
+                listOf("Not Found")
             } else {
-                if(book.subject.size > 10) book.subject.take(10).toString() else book.subject.toString()
+                if (book.subject.size > 10) book.subject.take(10) else book.subject
             }
-        searchListener.onViewBook(book.title, author, year, book.image, subjects)
+        return Book(book.title, book.image, book.author, book.firstPublishYear, subjects)
     }
 
-    override fun doesShuffledListExist(searchListener: OnFinishedSearchListener) {
-        val check = dateDao.checkIfTableExists(uid)
-
-        if(check){
-            searchListener.shuffledListExists()
-        }
+    override fun doesShuffledListExist(
+        searchListener: OnFinishedSearchListener,
+        uid: String
+    ): Boolean {
+        return dateDao.checkIfTableExists(uid)
     }
 }

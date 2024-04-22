@@ -6,19 +6,10 @@ interface SearchContract {
     interface Model{
         interface OnFinishedSearchListener{
             fun onFinishSearch(books: ArrayList<Book>)
-            fun onBookAdded(result: String)
             fun onFinishSearchMore(books: ArrayList<Book>)
-            fun onViewBook(
-                title: String,
-                author: String,
-                firstYearPublished: String,
-                image: String?,
-                subjects: String
-            )
 
             fun searchError()
 
-            fun shuffledListExists()
         }
         fun getBooks(
             searchKey: String,
@@ -30,28 +21,29 @@ interface SearchContract {
             firstYearPublished: String,
             image: String?,
             subjects: String,
-            searchListener: OnFinishedSearchListener)
+            uid: String) : Boolean
         fun getMoreBooks(
             searchKey: String, pageNumber: Int,
             searchListener: OnFinishedSearchListener)
         fun viewBook(
             book: Book,
-            searchListener: OnFinishedSearchListener)
+            searchListener: OnFinishedSearchListener) : Book
 
-        fun doesShuffledListExist(searchListener: OnFinishedSearchListener)
+        fun doesShuffledListExist(searchListener: OnFinishedSearchListener, uid: String) : Boolean
     }
 
     interface Presenter{
-        fun searchBooks(searchKey: String, pageNumber: Int)
+        fun onSearchBooks(searchKey: String, pageNumber: Int)
         fun addBook(
             title: String,
             author: String,
             firstYearPublished: String,
             image: String?,
-            subjects: String)
-        fun searchMore(searchKey: String, pageNumber: Int)
-        fun viewBook(book: Book)
-        fun checkShuffledList()
+            subjects: String,
+            uid: String)
+        fun onSearchMore(searchKey: String, pageNumber: Int)
+        fun onViewBook(book: Book)
+        fun checkShuffledList(uid: String)
     }
 
     interface View{
