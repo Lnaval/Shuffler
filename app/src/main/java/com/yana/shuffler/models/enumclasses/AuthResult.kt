@@ -1,4 +1,4 @@
-package com.yana.shuffler
+package com.yana.shuffler.models.enumclasses
 
 enum class AuthResult (val message: String) {
     Required("Both fields are required"),

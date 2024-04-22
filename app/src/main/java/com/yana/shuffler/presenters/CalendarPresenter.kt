@@ -1,6 +1,6 @@
 package com.yana.shuffler.presenters
 
-import com.yana.shuffler.CalendarResult
+import com.yana.shuffler.models.enumclasses.CalendarResult
 import com.yana.shuffler.contracts.CalendarContract
 import java.util.Date
 

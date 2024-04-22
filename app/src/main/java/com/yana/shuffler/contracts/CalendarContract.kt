@@ -1,6 +1,6 @@
 package com.yana.shuffler.contracts
 
-import com.yana.shuffler.CalendarResult
+import com.yana.shuffler.models.enumclasses.CalendarResult
 import com.yana.shuffler.models.room.RoomDate
 import java.util.Date
 

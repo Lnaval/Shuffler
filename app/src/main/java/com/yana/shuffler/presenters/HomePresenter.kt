@@ -1,6 +1,6 @@
 package com.yana.shuffler.presenters
 
-import com.yana.shuffler.BookQueryResult
+import com.yana.shuffler.models.enumclasses.BookQueryResult
 import com.yana.shuffler.contracts.HomeContract
 import com.yana.shuffler.models.room.RoomBook
 

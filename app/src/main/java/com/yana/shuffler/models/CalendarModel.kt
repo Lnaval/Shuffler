@@ -2,7 +2,7 @@ package com.yana.shuffler.models
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.yana.shuffler.CalendarResult
+import com.yana.shuffler.models.enumclasses.CalendarResult
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.models.room.BookDao
 import com.yana.shuffler.models.room.DateDao

@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.AuthActivity
-import com.yana.shuffler.BookQueryResult
+import com.yana.shuffler.models.enumclasses.BookQueryResult
 import com.yana.shuffler.MainActivity
 import com.yana.shuffler.R
 import com.yana.shuffler.ShufflerApp

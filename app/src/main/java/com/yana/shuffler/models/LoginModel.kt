@@ -5,7 +5,7 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.yana.shuffler.AuthResult
+import com.yana.shuffler.models.enumclasses.AuthResult
 import com.yana.shuffler.contracts.LoginContract
 
 class LoginModel(private val activity: Activity) : LoginContract.Model {

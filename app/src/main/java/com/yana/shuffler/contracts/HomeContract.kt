@@ -1,6 +1,6 @@
 package com.yana.shuffler.contracts
 
-import com.yana.shuffler.BookQueryResult
+import com.yana.shuffler.models.enumclasses.BookQueryResult
 import com.yana.shuffler.models.room.RoomBook
 
 interface HomeContract {

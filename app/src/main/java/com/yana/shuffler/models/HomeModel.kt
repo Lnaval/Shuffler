@@ -1,6 +1,6 @@
 package com.yana.shuffler.models
 
-import com.yana.shuffler.BookQueryResult
+import com.yana.shuffler.models.enumclasses.BookQueryResult
 import com.yana.shuffler.contracts.HomeContract
 import com.yana.shuffler.models.room.BookDao
 import com.yana.shuffler.models.room.DateDao

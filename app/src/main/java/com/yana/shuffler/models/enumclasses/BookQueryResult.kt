@@ -1,4 +1,4 @@
-package com.yana.shuffler
+package com.yana.shuffler.models.enumclasses
 
 enum class BookQueryResult(val identifier: String) {
     OnTrack("You're currently on track with your reading list"),
