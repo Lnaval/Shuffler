@@ -1,6 +1,5 @@
 package com.yana.shuffler.presenters
 
-import android.content.Context
 import com.yana.shuffler.contracts.SearchContract
 import com.yana.shuffler.models.Book
 
@@ -17,10 +16,9 @@ class SearchPresenter(
         author: String,
         firstYearPublished: String,
         image: String?,
-        subjects: String,
-        context: Context
+        subjects: String
     ) {
-        model.addBookToList(title, author, firstYearPublished, image, subjects, context, this)
+        model.addBookToList(title, author, firstYearPublished, image, subjects, this)
     }
 
     override fun searchMore(searchKey: String, pageNumber: Int) {
@@ -31,8 +29,8 @@ class SearchPresenter(
         model.viewBook(book, this)
     }
 
-    override fun checkShuffledList(context: Context) {
-        model.doesShuffledListExist(context, this)
+    override fun checkShuffledList() {
+        model.doesShuffledListExist(this)
     }
 
     override fun onFinishSearch(books: ArrayList<Book>) {

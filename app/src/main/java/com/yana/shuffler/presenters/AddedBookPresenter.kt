@@ -1,6 +1,5 @@
 package com.yana.shuffler.presenters
 
-import android.content.Context
 import com.yana.shuffler.contracts.AddedBook
 import com.yana.shuffler.models.room.RoomBook
 
@@ -28,23 +27,23 @@ class AddedBookPresenter(
         mainView!!.displayDeleteResult(result)
     }
 
-    override fun getAllBooks(context: Context) {
-        model.getAllBooks(context, this)
+    override fun getAllBooks() {
+        model.getAllBooks(this)
     }
 
-    override fun requestDelete(context: Context, id: Int) {
-        model.requestToDeleteBook(context, id, this)
+    override fun requestDelete(id: Int) {
+        model.requestToDeleteBook(id, this)
     }
 
-    override fun confirmDelete(context: Context, id: Int) {
-        model.deleteBook(context, id, this)
+    override fun confirmDelete(id: Int) {
+        model.deleteBook(id, this)
     }
 
-    override fun requestDeleteAll(context: Context) {
-        model.requestToDeleteAllBooks(context, this)
+    override fun requestDeleteAll() {
+        model.requestToDeleteAllBooks(this)
     }
 
-    override fun confirmDeleteAll(context: Context) {
-        model.deleteAllBooks(context, this)
+    override fun confirmDeleteAll() {
+        model.deleteAllBooks(this)
     }
 }

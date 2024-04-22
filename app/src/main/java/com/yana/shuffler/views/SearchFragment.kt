@@ -16,12 +16,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.yana.shuffler.R
+import com.yana.shuffler.ShufflerApp
 import com.yana.shuffler.contracts.SearchContract
 import com.yana.shuffler.databinding.DialogBottomSheetBookDetailsBinding
 import com.yana.shuffler.databinding.DialogNoInternetBinding
 import com.yana.shuffler.databinding.FragmentSearchBinding
 import com.yana.shuffler.models.Book
-import com.yana.shuffler.models.SearchModel
 import com.yana.shuffler.presenters.SearchPresenter
 
 class SearchFragment : Fragment(), SearchContract.View {
@@ -44,7 +44,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchPresenter = SearchPresenter(this, SearchModel())
+        searchPresenter = SearchPresenter(this, ShufflerApp.appContainer.searchModel)
 
         val search = binding.searchView
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -124,10 +124,10 @@ class SearchFragment : Fragment(), SearchContract.View {
                 .thumbnail(Glide.with(bookImage).load(R.drawable.image_loading))
                 .into(bookImage)
 
-            searchPresenter.checkShuffledList(requireContext())
+            searchPresenter.checkShuffledList()
 
             buttonAddToList.setOnClickListener{
-                searchPresenter.addBook(title, author, firstYearPublished, image, subjects, requireContext())
+                searchPresenter.addBook(title, author, firstYearPublished, image, subjects)
             }
         }
         mBottomSheetDialog.show()

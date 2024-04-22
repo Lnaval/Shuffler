@@ -1,6 +1,5 @@
 package com.yana.shuffler.contracts
 
-import android.content.Context
 import com.yana.shuffler.models.Book
 
 interface SearchContract {
@@ -31,7 +30,6 @@ interface SearchContract {
             firstYearPublished: String,
             image: String?,
             subjects: String,
-            context: Context,
             searchListener: OnFinishedSearchListener)
         fun getMoreBooks(
             searchKey: String, pageNumber: Int,
@@ -40,7 +38,7 @@ interface SearchContract {
             book: Book,
             searchListener: OnFinishedSearchListener)
 
-        fun doesShuffledListExist(context: Context, searchListener: OnFinishedSearchListener)
+        fun doesShuffledListExist(searchListener: OnFinishedSearchListener)
     }
 
     interface Presenter{
@@ -50,11 +48,10 @@ interface SearchContract {
             author: String,
             firstYearPublished: String,
             image: String?,
-            subjects: String,
-            context: Context)
+            subjects: String)
         fun searchMore(searchKey: String, pageNumber: Int)
         fun viewBook(book: Book)
-        fun checkShuffledList(context: Context)
+        fun checkShuffledList()
     }
 
     interface View{

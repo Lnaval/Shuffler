@@ -1,6 +1,5 @@
 package com.yana.shuffler.presenters
 
-import android.content.Context
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.models.room.RoomDate
 import java.util.Date
@@ -29,20 +28,20 @@ class CalendarPresenter(
         mainView!!.displayMessageWhenBookIsEmpty()
     }
 
-    override fun requestCalendarData(date: Date, dayInMonth: Int, context: Context) {
-        model.getCalendarData(date, dayInMonth, context, this)
+    override fun requestCalendarData(date: Date, dayInMonth: Int) {
+        model.getCalendarData(date, dayInMonth, this)
     }
 
-    override fun requestDateTableData(context: Context) {
-        model.getDateTableData(context, this)
+    override fun requestDateTableData() {
+        model.getDateTableData(this)
     }
 
-    override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context) {
-        model.checkIfBookCanBeOpened(dateToday, bookDateId, context, this)
+    override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int) {
+        model.checkIfBookCanBeOpened(dateToday, bookDateId, this)
     }
 
-    override fun shuffleList(daysAfter: String, context: Context) {
-        model.shuffleRetrievedData(daysAfter, context, this)
+    override fun shuffleList(daysAfter: String) {
+        model.shuffleRetrievedData(daysAfter, this)
     }
 
 }

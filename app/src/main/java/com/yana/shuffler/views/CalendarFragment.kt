@@ -13,11 +13,11 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yana.shuffler.MainActivity
 import com.yana.shuffler.R
+import com.yana.shuffler.ShufflerApp
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.databinding.DialogEmptyBookListBinding
 import com.yana.shuffler.databinding.DialogShuffleBinding
 import com.yana.shuffler.databinding.FragmentCalendarBinding
-import com.yana.shuffler.models.CalendarModel
 import com.yana.shuffler.models.room.RoomDate
 import com.yana.shuffler.presenters.CalendarPresenter
 import java.text.SimpleDateFormat
@@ -39,8 +39,8 @@ class CalendarFragment : Fragment(), CalendarContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        calendarPresenter = CalendarPresenter(this, CalendarModel())
-        calendarPresenter.requestDateTableData(requireContext())
+        calendarPresenter = CalendarPresenter(this, ShufflerApp.appContainer.calendarModel)
+        calendarPresenter.requestDateTableData()
     }
 
     override fun onDestroyView() {
@@ -63,9 +63,9 @@ class CalendarFragment : Fragment(), CalendarContract.View {
 
             sBDialogBinding.confirm.setOnClickListener {
                 val daysAfter = sBDialogBinding.daysAfterInput.text.toString()
-                calendarPresenter.shuffleList(daysAfter, requireContext())
+                calendarPresenter.shuffleList(daysAfter)
                 shuffleBooksDialog.cancel()
-                calendarPresenter.requestDateTableData(requireContext())
+                calendarPresenter.requestDateTableData()
             }
 
             sBDialogBinding.cancel.setOnClickListener {
@@ -80,20 +80,20 @@ class CalendarFragment : Fragment(), CalendarContract.View {
             val monthTextFormat = SimpleDateFormat("MMMM, yyyy", Locale.getDefault())
             binding.monthText.text = monthTextFormat.format(calendar.time)
 
-            calendarPresenter.requestCalendarData(calendar.time, dayInMonth, requireContext())
+            calendarPresenter.requestCalendarData(calendar.time, dayInMonth)
 
             binding.prevKey.setOnClickListener {
                 calendar.add(Calendar.MONTH, -1)
                 binding.monthText.text = monthTextFormat.format(calendar.time)
                 dayInMonth = calendar.getActualMaximum(Calendar.DATE)
-                calendarPresenter.requestCalendarData(calendar.time, dayInMonth, requireContext())
+                calendarPresenter.requestCalendarData(calendar.time, dayInMonth)
             }
 
             binding.nextKey.setOnClickListener {
                 calendar.add(Calendar.MONTH, 1)
                 binding.monthText.text = monthTextFormat.format(calendar.time)
                 dayInMonth = calendar.getActualMaximum(Calendar.DATE)
-                calendarPresenter.requestCalendarData(calendar.time, dayInMonth, requireContext())
+                calendarPresenter.requestCalendarData(calendar.time, dayInMonth)
             }
         }
     }
@@ -102,7 +102,7 @@ class CalendarFragment : Fragment(), CalendarContract.View {
         val calendar = Calendar.getInstance()
         val dateToday = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(calendar.time)
         val calendarAdapter = CalendarAdapter {
-            calendarPresenter.checkIfBookCanBeOpened(dateToday, it, requireContext())
+            calendarPresenter.checkIfBookCanBeOpened(dateToday, it)
         }
 
         calendarAdapter.asyncListDiffer.submitList(dataForAdapter)

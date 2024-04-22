@@ -13,10 +13,10 @@ import android.view.Window
 import com.bumptech.glide.Glide
 import com.yana.shuffler.MainActivity
 import com.yana.shuffler.R
+import com.yana.shuffler.ShufflerApp
 import com.yana.shuffler.contracts.ShowBookOnDateContract
 import com.yana.shuffler.databinding.DialogCompletedBinding
 import com.yana.shuffler.databinding.FragmentShowBookOnDateBinding
-import com.yana.shuffler.models.BookOnDateModel
 import com.yana.shuffler.models.room.RoomBook
 import com.yana.shuffler.presenters.BookOnDatePresenter
 
@@ -36,8 +36,8 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         val id = requireArguments().getInt(ID_KEY)
-        bookOnDatePresenter = BookOnDatePresenter(this, BookOnDateModel())
-        bookOnDatePresenter.requestBookOnDateData(requireContext(), id)
+        bookOnDatePresenter = BookOnDatePresenter(this, ShufflerApp.appContainer.bookOnDateModel)
+        bookOnDatePresenter.requestBookOnDateData(id)
     }
 
     override fun onDestroyView() {
@@ -77,7 +77,7 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
             }
 
             binding.completedButton.setOnClickListener {
-                bookOnDatePresenter.requestUpdateBookStatus(requireContext(), data.id)
+                bookOnDatePresenter.requestUpdateBookStatus(data.id)
             }
         }
     }
@@ -102,7 +102,7 @@ class ShowBookOnDateFragment : Fragment(), ShowBookOnDateContract.View {
             show()
         }
         cSDialogCompletedBinding.confirm.setOnClickListener{
-            bookOnDatePresenter.requestDeleteShelf(requireContext())
+            bookOnDatePresenter.requestDeleteShelf()
             completedDialog.cancel()
             (activity as MainActivity).replaceFragment(HomeFragment(), R.id.navHome)
         }

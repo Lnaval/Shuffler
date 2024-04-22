@@ -1,6 +1,5 @@
 package com.yana.shuffler.presenters
 
-import android.content.Context
 import com.yana.shuffler.BookQueryResult
 import com.yana.shuffler.contracts.HomeContract
 import com.yana.shuffler.models.room.RoomBook
@@ -21,15 +20,15 @@ class HomePresenter (
         mainView!!.displayAlreadyReadMessage(result)
     }
 
-    override fun requestBookDataByDateToday(context: Context, dateToday: String) {
-        model.getBookDataByDate(context, dateToday, this)
+    override fun requestBookDataByDateToday(dateToday: String) {
+        model.getBookDataByDate(dateToday, this)
     }
 
-    override fun requestFiveBooks(context: Context) {
-        model.getFiveBooks(context, this)
+    override fun requestFiveBooks() {
+        model.getFiveBooks(this)
     }
 
-    override fun requestDeleteShelf(context: Context) {
-        model.deleteShelf(context)
+    override fun requestDeleteShelf() {
+        model.deleteShelf()
     }
 }

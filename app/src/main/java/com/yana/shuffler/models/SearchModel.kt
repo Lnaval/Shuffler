@@ -1,11 +1,11 @@
 package com.yana.shuffler.models
 
-import android.content.Context
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.contracts.SearchContract
 import com.yana.shuffler.contracts.SearchContract.Model.OnFinishedSearchListener
-import com.yana.shuffler.models.room.AddedBookDatabase
+import com.yana.shuffler.models.room.BookDao
+import com.yana.shuffler.models.room.DateDao
 import com.yana.shuffler.models.room.RoomBook
 import com.yana.shuffler.network.OpenLibraryInterface
 import com.yana.shuffler.network.RetrofitInstance
@@ -13,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchModel : SearchContract.Model {
+class SearchModel (private val bookDao: BookDao, private val dateDao: DateDao) : SearchContract.Model {
     private val apiService = RetrofitInstance.build().create(OpenLibraryInterface::class.java)
     private val uid = Firebase.auth.currentUser!!.uid
 
@@ -40,17 +40,14 @@ class SearchModel : SearchContract.Model {
         firstYearPublished: String,
         image: String?,
         subjects: String,
-        context: Context,
         searchListener: OnFinishedSearchListener
     ) {
-        val bookDao = AddedBookDatabase.getInstance(context).bookDao()
-        //add book to room database
         val bookToAdd = RoomBook(0, title, image, author, subjects, uid)
 
         if(bookDao.checkIfBookExists(bookToAdd.title, uid)){
             searchListener.onBookAdded("Book Already Added")
         } else {
-            AddedBookDatabase.getInstance(context).bookDao().addBook(bookToAdd)
+            bookDao.addBook(bookToAdd)
             searchListener.onBookAdded("Book Added")
         }
     }
@@ -85,8 +82,8 @@ class SearchModel : SearchContract.Model {
         searchListener.onViewBook(book.title, author, year, book.image, subjects)
     }
 
-    override fun doesShuffledListExist(context: Context, searchListener: OnFinishedSearchListener) {
-        val check = AddedBookDatabase.getInstance(context).dateDao().checkIfTableExists(uid)
+    override fun doesShuffledListExist(searchListener: OnFinishedSearchListener) {
+        val check = dateDao.checkIfTableExists(uid)
 
         if(check){
             searchListener.shuffledListExists()

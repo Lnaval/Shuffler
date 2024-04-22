@@ -1,6 +1,5 @@
 package com.yana.shuffler.contracts
 
-import android.content.Context
 import com.yana.shuffler.BookQueryResult
 import com.yana.shuffler.models.room.RoomBook
 
@@ -11,15 +10,15 @@ interface HomeContract {
             fun fiveBooksResult(books: List<RoomBook>)
             fun bookAlreadyReadRsult(result: BookQueryResult)
         }
-        fun getBookDataByDate(context: Context, dateToday: String, homeListener: HomeListener)
-        fun getFiveBooks(context: Context, homeListener: HomeListener)
-        fun deleteShelf(context: Context)
+        fun getBookDataByDate(dateToday: String, homeListener: HomeListener)
+        fun getFiveBooks(homeListener: HomeListener)
+        fun deleteShelf()
     }
 
     interface Presenter{
-        fun requestBookDataByDateToday(context: Context, dateToday: String)
-        fun requestFiveBooks(context: Context)
-        fun requestDeleteShelf(context: Context)
+        fun requestBookDataByDateToday(dateToday: String)
+        fun requestFiveBooks()
+        fun requestDeleteShelf()
     }
 
     interface View{

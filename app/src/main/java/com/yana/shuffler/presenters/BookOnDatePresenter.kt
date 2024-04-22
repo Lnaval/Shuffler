@@ -1,6 +1,5 @@
 package com.yana.shuffler.presenters
 
-import android.content.Context
 import com.yana.shuffler.contracts.ShowBookOnDateContract
 import com.yana.shuffler.models.room.RoomBook
 
@@ -20,15 +19,15 @@ class BookOnDatePresenter(
         mainView!!.displayFinishedShelf(message)
     }
 
-    override fun requestBookOnDateData(context: Context, id: Int) {
-        model.loadBookOnDateData(context, id, this)
+    override fun requestBookOnDateData(id: Int) {
+        model.loadBookOnDateData(id, this)
     }
 
-    override fun requestUpdateBookStatus(context: Context, dateId: Int) {
-        model.updateBookStatus(context, dateId, this)
+    override fun requestUpdateBookStatus(dateId: Int) {
+        model.updateBookStatus(dateId, this)
     }
 
-    override fun requestDeleteShelf(context: Context) {
-        model.deleteBookShelf(context, this)
+    override fun requestDeleteShelf() {
+        model.deleteBookShelf(this)
     }
 }

@@ -16,9 +16,9 @@ import com.yana.shuffler.AuthActivity
 import com.yana.shuffler.BookQueryResult
 import com.yana.shuffler.MainActivity
 import com.yana.shuffler.R
+import com.yana.shuffler.ShufflerApp
 import com.yana.shuffler.contracts.HomeContract
 import com.yana.shuffler.databinding.FragmentHomeBinding
-import com.yana.shuffler.models.HomeModel
 import com.yana.shuffler.models.room.RoomBook
 import com.yana.shuffler.presenters.HomePresenter
 import java.text.SimpleDateFormat
@@ -42,9 +42,9 @@ class HomeFragment : Fragment(), HomeContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         val dateToday = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(Date())
-        homePresenter = HomePresenter(this, HomeModel())
-        homePresenter.requestBookDataByDateToday(requireContext(), dateToday)
-        homePresenter.requestFiveBooks(requireContext())
+        homePresenter = HomePresenter(this, ShufflerApp.appContainer.homeModel)
+        homePresenter.requestBookDataByDateToday(dateToday)
+        homePresenter.requestFiveBooks()
 
         val currentUser = Firebase.auth.currentUser!!
         binding.subtitle.append(currentUser.email)
@@ -53,11 +53,6 @@ class HomeFragment : Fragment(), HomeContract.View {
             (activity as MainActivity).replaceFragment(AddedBooksFragment(), R.id.navBookList)
         }
         binding.logoutButton.setOnClickListener{
-//            val sharedPreferences = requireContext().getSharedPreferences(SP_STRING, MODE_PRIVATE)
-//            val editor = sharedPreferences.edit()
-//            editor.putString(AUTH_KEY, "false")
-//            editor.apply()
-
             Firebase.auth.signOut()
 
             val intent = Intent(this@HomeFragment.context, AuthActivity::class.java)
@@ -102,7 +97,7 @@ class HomeFragment : Fragment(), HomeContract.View {
         if(message == BookQueryResult.Completed){
             binding.deleteBookshelf.visibility = View.VISIBLE
             binding.deleteBookshelf.setOnClickListener{
-                homePresenter.requestDeleteShelf(requireContext())
+                homePresenter.requestDeleteShelf()
                 this@HomeFragment.onDestroyView()
                 (activity as MainActivity).replaceFragment(HomeFragment(), R.id.navHome)
             }

@@ -13,10 +13,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yana.shuffler.MainActivity
 import com.yana.shuffler.R
+import com.yana.shuffler.ShufflerApp
 import com.yana.shuffler.contracts.AddedBook
 import com.yana.shuffler.databinding.DialogConfirmDeleteBinding
 import com.yana.shuffler.databinding.FragmentAddedBooksBinding
-import com.yana.shuffler.models.AddedBookModel
 import com.yana.shuffler.models.room.RoomBook
 import com.yana.shuffler.presenters.AddedBookPresenter
 
@@ -36,11 +36,11 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addedBookPresenter = AddedBookPresenter(this, AddedBookModel())
-        addedBookPresenter.getAllBooks(requireContext())
+        addedBookPresenter = AddedBookPresenter(this, ShufflerApp.appContainer.addedBookModel)
+        addedBookPresenter.getAllBooks()
 
         binding.deleteBookshelf.setOnClickListener {
-            addedBookPresenter.requestDeleteAll(requireContext())
+            addedBookPresenter.requestDeleteAll()
         }
     }
 
@@ -54,7 +54,7 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
             binding.emptyBookDialogue.visibility = View.VISIBLE
         } else {
             val addedBooksAdapter = AddedBooksAdapter{
-                addedBookPresenter.requestDelete(requireContext(), it)
+                addedBookPresenter.requestDelete(it)
             }
             addedBooksAdapter.asyncListDiffer.submitList(books)
             binding.addedBooks.apply {
@@ -78,7 +78,7 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
         toDeleteBooksBinding.message.text = getString(R.string.delete_book, book.title, book.author)
 
         toDeleteBooksBinding.confirm.setOnClickListener {
-            addedBookPresenter.confirmDelete(requireContext(), book.id)
+            addedBookPresenter.confirmDelete(book.id)
             toDeleteBookDialog.cancel()
             (activity as MainActivity).replaceFragment(AddedBooksFragment(), R.id.navBookList)
         }
@@ -107,7 +107,7 @@ class AddedBooksFragment : Fragment(), AddedBook.View {
         toDeleteBooksBinding.message.text = getString(R.string.delete_bookshelf)
 
         toDeleteBooksBinding.confirm.setOnClickListener {
-            addedBookPresenter.confirmDeleteAll(requireContext())
+            addedBookPresenter.confirmDeleteAll()
             toDeleteBookDialog.cancel()
             (activity as MainActivity).replaceFragment(AddedBooksFragment(), R.id.navBookList)
         }

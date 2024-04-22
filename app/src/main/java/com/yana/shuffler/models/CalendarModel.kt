@@ -1,13 +1,13 @@
 package com.yana.shuffler.models
 
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.contracts.CalendarContract
 import com.yana.shuffler.contracts.CalendarContract.Model.OnFinishCalendarListener
-import com.yana.shuffler.models.room.AddedBookDatabase
+import com.yana.shuffler.models.room.BookDao
+import com.yana.shuffler.models.room.DateDao
 import com.yana.shuffler.models.room.RoomBook
 import com.yana.shuffler.models.room.RoomDate
 import java.text.SimpleDateFormat
@@ -16,16 +16,20 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class CalendarModel: CalendarContract.Model {
+class CalendarModel (private val bookDao: BookDao, private val dateDao: DateDao): CalendarContract.Model {
     private val uid = Firebase.auth.currentUser!!.uid
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getCalendarData(date: Date, dayInMonth: Int, context: Context, calendarListener: OnFinishCalendarListener) {
+    override fun getCalendarData(
+        date: Date,
+        dayInMonth: Int,
+        calendarListener: OnFinishCalendarListener
+    ) {
         val monthNumberFormat = SimpleDateFormat("MM-yyyy", Locale.getDefault())
         val year = monthNumberFormat.format(date).substring(3,7)
         val month = monthNumberFormat.format(date).substring(0,2)
         val dayOfMonthStartAt = LocalDate.of(year.toInt(), month.toInt(), 1).dayOfWeek.value
 
-        val dateTableList = AddedBookDatabase.getInstance(context).dateDao().getAll(uid)
+        val dateTableList = dateDao.getAll(uid)
 
         val dateListTableForEachMonth = dateTableList.filter { listItem ->
             val checkDate = listItem.date.substring(0,3)+listItem.date.substring(6,10)
@@ -36,23 +40,25 @@ class CalendarModel: CalendarContract.Model {
         calendarListener.finishedGettingCalendarData(dataForAdapter)
     }
 
-    override fun getDateTableData(context: Context, calendarListener: OnFinishCalendarListener) {
-        val check = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList(uid)
+    override fun getDateTableData(calendarListener: OnFinishCalendarListener) {
+        val check = bookDao.getAllBookInList(uid)
         if(check.isEmpty()){
             calendarListener.checkBookListSize()
         } else {
-            val result = AddedBookDatabase.getInstance(context).dateDao().getAll(uid)
+            val result = dateDao.getAll(uid)
             calendarListener.finishedGettingDateTableData(result.isNotEmpty())
         }
     }
 
-    //add listener function?
-    override fun shuffleRetrievedData(daysAfter: String, context: Context, calendarListener: OnFinishCalendarListener) {
-        val currentBookList = AddedBookDatabase.getInstance(context).bookDao().getAllBookInList(uid)
+    override fun shuffleRetrievedData(
+        daysAfter: String,
+        calendarListener: OnFinishCalendarListener
+    ) {
+        val currentBookList = bookDao.getAllBookInList(uid)
         if(daysAfter.isNotEmpty()){
             if (daysAfter.toInt() != 0) {
                 val shuffleList = currentBookList.shuffled()
-                assignBookToDate(daysAfter.toInt(), shuffleList, context)
+                assignBookToDate(daysAfter.toInt(), shuffleList)
             } else {
                 calendarListener.errorMessage("Invalid input")
             }
@@ -62,8 +68,12 @@ class CalendarModel: CalendarContract.Model {
         }
     }
 
-    override fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener) {
-        val item = AddedBookDatabase.getInstance(context).dateDao().getIndividual(bookDateId, uid)
+    override fun checkIfBookCanBeOpened(
+        dateToday: String,
+        bookDateId: Int,
+        calendarListener: OnFinishCalendarListener
+    ) {
+        val item = dateDao.getIndividual(bookDateId, uid)
 
         if(item.date <= dateToday){
             calendarListener.canBookOnDateBeOpen(item.book)
@@ -72,7 +82,7 @@ class CalendarModel: CalendarContract.Model {
         }
     }
 
-    private fun assignBookToDate(daysAfter: Int, shuffledList: List<RoomBook>, context: Context) {
+    private fun assignBookToDate(daysAfter: Int, shuffledList: List<RoomBook>) {
         var count = 0
         val newDateList = ArrayList<RoomDate>()
         for(item in shuffledList){
@@ -84,7 +94,7 @@ class CalendarModel: CalendarContract.Model {
             newDateList.add(RoomDate(0,dayToAssign.toString(), item.id, false, uid))
             count += daysAfter
         }
-        AddedBookDatabase.getInstance(context).dateDao().addAll(newDateList)
+        dateDao.addAll(newDateList)
     }
 
     private fun getDataForCalendarAdapter(dateList: List<RoomDate>, dayOfMonthStartAt: Int, dayInMonth: Int) : ArrayList<RoomDate>{

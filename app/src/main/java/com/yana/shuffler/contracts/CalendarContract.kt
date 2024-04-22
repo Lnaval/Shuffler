@@ -1,6 +1,5 @@
 package com.yana.shuffler.contracts
 
-import android.content.Context
 import com.yana.shuffler.models.room.RoomDate
 import java.util.Date
 
@@ -14,10 +13,10 @@ interface CalendarContract {
             fun checkBookListSize()
         }
 
-        fun getCalendarData(date: Date, dayInMonth: Int, context: Context, calendarListener: OnFinishCalendarListener)
-        fun getDateTableData(context: Context, calendarListener: OnFinishCalendarListener)
-        fun shuffleRetrievedData(daysAfter: String, context: Context, calendarListener: OnFinishCalendarListener)
-        fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context, calendarListener: OnFinishCalendarListener)
+        fun getCalendarData(date: Date, dayInMonth: Int, calendarListener: OnFinishCalendarListener)
+        fun getDateTableData(calendarListener: OnFinishCalendarListener)
+        fun shuffleRetrievedData(daysAfter: String, calendarListener: OnFinishCalendarListener)
+        fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, calendarListener: OnFinishCalendarListener)
     }
 
     interface View{
@@ -29,9 +28,9 @@ interface CalendarContract {
     }
 
     interface Presenter{
-        fun requestCalendarData(date: Date, dayInMonth: Int, context: Context)
-        fun requestDateTableData(context: Context)
-        fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int, context: Context)
-        fun shuffleList(daysAfter: String, context: Context)
+        fun requestCalendarData(date: Date, dayInMonth: Int)
+        fun requestDateTableData()
+        fun checkIfBookCanBeOpened(dateToday: String, bookDateId: Int)
+        fun shuffleList(daysAfter: String)
     }
 }
