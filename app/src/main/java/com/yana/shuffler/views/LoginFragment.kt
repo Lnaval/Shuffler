@@ -35,7 +35,7 @@ class LoginFragment : Fragment(), LoginContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loginPresenter = LoginPresenter(this, LoginModel(requireActivity()))
+        loginPresenter = LoginPresenter(this, LoginModel())
 
         binding.submit.setOnClickListener {
             val email = binding.email.text.toString()

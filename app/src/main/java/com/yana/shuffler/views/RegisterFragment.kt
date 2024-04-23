@@ -35,7 +35,7 @@ class RegisterFragment : Fragment(), RegisterContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         mAuth = Firebase.auth
-        registerPresenter = RegisterPresenter(this, RegisterModel(requireActivity()))
+        registerPresenter = RegisterPresenter(this, RegisterModel())
 
         binding.submit.setOnClickListener {
             val email = binding.email.text.toString()

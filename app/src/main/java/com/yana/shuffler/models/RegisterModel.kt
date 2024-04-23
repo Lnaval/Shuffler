@@ -1,6 +1,5 @@
 package com.yana.shuffler.models
 
-import android.app.Activity
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.auth
@@ -8,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.models.enumclasses.AuthResult
 import com.yana.shuffler.contracts.RegisterContract
 
-class RegisterModel(private val activity: Activity) : RegisterContract.Model{
+class RegisterModel : RegisterContract.Model{
     override fun registerUser(
         email: String,
         password: String,
@@ -19,7 +18,7 @@ class RegisterModel(private val activity: Activity) : RegisterContract.Model{
         } else {
             val mAuth = Firebase.auth
             mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity) { task ->
+                .addOnCompleteListener{ task ->
                     if (task.isSuccessful) {
                         listener.onSuccess()
                     } else {

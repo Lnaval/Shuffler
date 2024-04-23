@@ -1,6 +1,5 @@
 package com.yana.shuffler.models
 
-import android.app.Activity
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.ktx.auth
@@ -8,7 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.yana.shuffler.models.enumclasses.AuthResult
 import com.yana.shuffler.contracts.LoginContract
 
-class LoginModel(private val activity: Activity) : LoginContract.Model {
+class LoginModel : LoginContract.Model {
     override fun checkUserAuth(
         email: String,
         password: String,
@@ -19,7 +18,7 @@ class LoginModel(private val activity: Activity) : LoginContract.Model {
         } else {
             val mAuth = Firebase.auth
             mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(activity) { task ->
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         loginListener.onAuthSuccess()
                     } else {
